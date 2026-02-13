@@ -1,0 +1,10 @@
+.center-div{
+    display:flex;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.personal-format{
+    min-width: 80%;
+}
