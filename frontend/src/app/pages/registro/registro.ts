@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-registro',
   imports: [CommonModule],
@@ -9,5 +10,4 @@ import { Component } from '@angular/core';
   styleUrl: './registro.css',
 })
 export class Registro {
-
 }
