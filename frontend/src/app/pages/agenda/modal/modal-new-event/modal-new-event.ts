@@ -2,17 +2,17 @@ import { Component, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services/auth.service';
-import { DateTimePicker } from '../../shared/date-time-picker/date-time-picker';
-import { EventService } from '../../core/services/event.service'
+import { AuthService } from '../../../../core/services/auth.service';
+import { DateTimePicker } from '../../../../shared/date-time-picker/date-time-picker';
+import { EventService } from '../../../../core/services/event.service'
 
 
 @Component({
   selector: 'app-new-event',
   standalone: true,
   imports: [FormsModule, CommonModule, DateTimePicker],
-  templateUrl: './new-event.html',
-  styleUrl: './new-event.css',
+  templateUrl: './modal-new-event.html',
+  styleUrl: './modal-new-event.css',
 })
 export class NewEvent {
 

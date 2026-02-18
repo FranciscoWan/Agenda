@@ -55,7 +55,6 @@ export class CalendarMonthComponent implements OnInit {
         current.setDate(current.getDate() + 1);
       }
     }
-    console.log('computou o map');
     return mapped;
   })
 

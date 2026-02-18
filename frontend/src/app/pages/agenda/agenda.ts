@@ -6,11 +6,15 @@ import { Router } from "@angular/router";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
-import { NewEvent } from '../../shared/new-event/new-event';
+import { NewEvent } from './modal/modal-new-event/modal-new-event';
 
 // import { CalendarDayComponent } from '../calendar/calendar-day.component';
 // import { CalendarWeekComponent } from '../calendar/calendar-week.component';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month';
+
+import { FaCirclePlusButton } from '../../shared/buttons/fa-circle-plus/fa-circle-plus';
+
+
 
 type ViewMode = 'day' | 'week' | 'month';
 
@@ -21,6 +25,7 @@ type ViewMode = 'day' | 'week' | 'month';
     CommonModule,
     CalendarMonthComponent,
     FontAwesomeModule,
+    FaCirclePlusButton,
     NewEvent,
   ],
   templateUrl: './agenda.html'
@@ -28,6 +33,8 @@ type ViewMode = 'day' | 'week' | 'month';
 export class Agenda {
 
   faCirclePlus = faCirclePlus;
+
+  isModalOpen = signal(false);
 
   constructor(
     private authService: AuthService,
@@ -48,11 +55,11 @@ export class Agenda {
   }
 
   openModal() {
-    this.showNewEventModal.set(true);
+    this.isModalOpen.set(true);
   }
 
   closeModal() {
-    this.showNewEventModal.set(false);
+     this.isModalOpen.set(false);
   }
 
   logout(): void {

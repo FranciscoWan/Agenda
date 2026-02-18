@@ -75,10 +75,7 @@
                                 Agenda
                             </h1>
                             <div class="flex">
-                                <button (click)="openModal()" class="px-8 py-2 text-3xl cursor-pointer">
-                                    <fa-icon [icon]="faCirclePlus" style="color: rgba(79, 70, 229, 1.00);">
-                                    </fa-icon>
-                                </button>
+                                <fa-circle-plus-button (clicked)="openModal()"></fa-circle-plus-button>
 
                                 <div class="flex gap-2 bg-white p-1 rounded-lg shadow-sm border border-indigo-100">
 
@@ -131,7 +128,7 @@
             </div>
         </div>
     </div>
-    @if (showNewEventModal()) {
+    @if (isModalOpen()) {
     <!-- BACKDROP -->
     <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
         (click)="closeModal()">
