@@ -1,0 +1,146 @@
+<section class="relative bg-stone-50">
+
+    <!-- Background effects -->
+    <div class="bg-sky-400 w-full sm:w-40 h-40 rounded-full absolute top-1 opacity-20 max-sm:right-0 sm:left-56 z-0">
+    </div>
+    <div class="bg-emerald-500 w-full sm:w-40 h-24 absolute top-0 left-0 opacity-20 z-0"></div>
+    <div class="bg-purple-600 w-full sm:w-40 h-24 absolute top-40 left-0 opacity-20 z-0"></div>
+
+    <div class="w-full pb-24 relative z-10 backdrop-blur-3xl">
+        <div class="flex items-center justify-end relative right-20 py-8 ">
+            <div class="bg-gray-700 py-1 rounded-md text-sm font-medium pl-8">
+                @if (username$ | async; as username) {
+                    <span class="text-sm text-white">
+                        Olá, {{ username }}
+                    </span>
+                    <button (click)="logout()" class="text-sm text-red-500 hover:underline cursor-pointer font-bold px-8">
+                        Sair
+                    </button>
+                }
+            </div>
+
+        </div>
+        <div class="w-full max-w-7xl mx-auto px-4 lg:px-8">
+
+            <!-- GRID PRINCIPAL -->
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+
+                <!-- ================= LEFT SIDE ================= -->
+                <div class="xl:col-span-5">
+
+                    <h2 class="text-3xl leading-tight text-gray-900 mb-1.5 font-semibold">
+                        Próximos eventos
+                    </h2>
+
+                    <p class="text-lg text-gray-600 mb-8">
+                        Não perca sua programação
+                    </p>
+
+                    <div class="flex flex-col gap-5">
+
+                        <!-- Card Evento -->
+                        <div class="p-6 rounded-xl bg-white shadow-sm">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+                                    <p class="text-base font-medium text-gray-900">
+                                        Jan 10,2020 - 10:00 - 11:00
+                                    </p>
+                                </div>
+                            </div>
+
+                            <h6 class="text-xl font-semibold text-black mb-1">
+                                Meeting with friends
+                            </h6>
+
+                            <p class="text-base text-gray-600">
+                                Meet-Up for Travel Destination Discussion
+                            </p>
+                        </div>
+
+                        <!-- Repita seus outros cards aqui normalmente -->
+
+                    </div>
+                </div>
+
+                <!-- ================= RIGHT SIDE ================= -->
+                <div class="xl:col-span-7">
+
+                    <div class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl h-full shadow-sm">
+
+                        <!-- Header -->
+                        <div class="flex items-center justify-between mb-6">
+
+                            <h1 class="text-2xl font-bold text-indigo-700">
+                                Agenda
+                            </h1>
+                            <div class="flex">
+                                <button (click)="openModal()" class="px-8 py-2 text-3xl cursor-pointer">
+                                    <fa-icon [icon]="faCirclePlus" style="color: rgba(79, 70, 229, 1.00);">
+                                    </fa-icon>
+                                </button>
+
+                                <div class="flex gap-2 bg-white p-1 rounded-lg shadow-sm border border-indigo-100">
+
+                                    <button (click)="setView('day')" [class.bg-indigo-600]="viewMode() === 'day'"
+                                        [class.text-white]="viewMode() === 'day'"
+                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-indigo-100">
+                                        Dia
+                                    </button>
+
+                                    <button (click)="setView('week')" [class.bg-indigo-600]="viewMode() === 'week'"
+                                        [class.text-white]="viewMode() === 'week'"
+                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-indigo-100">
+                                        Semana
+                                    </button>
+
+                                    <button (click)="setView('month')" [class.bg-indigo-600]="viewMode() === 'month'"
+                                        [class.text-white]="viewMode() === 'month'"
+                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-indigo-100">
+                                        Mês
+                                    </button>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Conteúdo -->
+                        <div class="bg-white rounded-xl shadow-md border border-indigo-100 p-4">
+
+                            @if (viewMode() === 'month') {
+                            <app-calendar-month></app-calendar-month>
+                            }
+
+                            <!-- Futuras views -->
+                            <!--
+              @if (viewMode() === 'week') {
+                <app-calendar-week></app-calendar-week>
+              }
+
+              @if (viewMode() === 'day') {
+                <app-calendar-day></app-calendar-day>
+              }
+              -->
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @if (showNewEventModal()) {
+    <!-- BACKDROP -->
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
+        (click)="closeModal()">
+
+        <!-- MODAL -->
+        <div class="relative" (click)="$event.stopPropagation()">
+            <app-new-event></app-new-event>
+        </div>
+
+    </div>
+    }
+</section>

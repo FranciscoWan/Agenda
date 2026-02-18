@@ -1,0 +1,64 @@
+<div class="w-full">
+
+  <!-- Cabeçalho -->
+  <div class="flex items-center mb-4">
+
+    <button (click)="previousMonth()" class="px-2 py-1 cursor-pointer">
+      <fa-icon [icon]="faAngleLeft"></fa-icon>
+    </button>
+
+    <button (click)="nextMonth()" class="px-2 py-1 cursor-pointer">
+      <fa-icon [icon]="faAngleRight"></fa-icon>
+    </button>
+
+    <h2 class="px-6 text-lg font-semibold text-indigo-700">
+      {{ monthTitle }}
+    </h2>
+
+  </div>
+
+  <!-- Dias da semana -->
+  <div class="grid grid-cols-7 text-center text-sm font-semibold text-indigo-600 border-b border-indigo-100 pb-2">
+    <div>Dom</div>
+    <div>Seg</div>
+    <div>Ter</div>
+    <div>Qua</div>
+    <div>Qui</div>
+    <div>Sex</div>
+    <div>Sáb</div>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid grid-cols-7 gap-px bg-indigo-100 rounded-lg overflow-hidden mt-2">
+
+    <!-- Espaços vazios -->
+    @for (empty of [].constructor(firstDayOfMonth); track $index) {
+      <div class="bg-white min-h-[100px]"></div>
+    }
+
+    <!-- Dias do mês -->
+    @for (day of daysInMonth; track day) {
+      <div class="bg-white min-h-[100px] p-2 text-sm relative hover:bg-indigo-50 transition cursor-pointer">
+
+        <span class="absolute top-2 right-2 text-gray-400 text-xs">
+          {{ day }}
+        </span>
+
+        <div class="mt-6 space-y-1">
+
+          @for (event of this.eventsByDay()[day]; track event.id) {
+            <div
+              class="text-white text-xs px-2 py-1 rounded-md truncate hover:scale-110"
+              [style.background]="event.color">
+              {{ event.title }}
+            </div>
+          }
+
+        </div>
+
+      </div>
+    }
+
+  </div>
+
+</div>
