@@ -1,16 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CustomButtonGrey } from '../../shared/buttons/custom-button-grey/custom-button-grey'
-import { CustomButtonBlue } from '../../shared/buttons/custom-button-blue/custom-button-blue';
+
+import { CustomButton } from "../../shared/buttons/custom-button/custom-button";
 
 @Component({
   selector: 'app-default',
-  imports: [CommonModule, 
+  imports: [CommonModule,
     RouterModule,
-    CustomButtonGrey,
-    CustomButtonBlue  
-  ],
+    CustomButton],
   templateUrl: './default.html',
   styleUrl: './default.css',
 })

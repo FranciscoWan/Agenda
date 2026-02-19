@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { CustomButtonBlue } from '../../shared/buttons/custom-button-blue/custom-button-blue';
+import { CustomButton } from "../../shared/buttons/custom-button/custom-button";
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CustomButtonBlue],
+  imports: [FormsModule, CustomButton],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

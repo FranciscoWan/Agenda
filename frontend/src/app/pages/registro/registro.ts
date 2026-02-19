@@ -6,17 +6,17 @@ import { AuthService } from '../../core/services/auth.service';
 import { RouterModule } from '@angular/router';
 import { SuccessPopupComponent } from '../../shared/success-popup/success-popup';
 import { signal } from '@angular/core';
-import { CustomButtonBlue } from '../../shared/buttons/custom-button-blue/custom-button-blue';
+import { CustomButton } from "../../shared/buttons/custom-button/custom-button";
 
 
 
 @Component({
   selector: 'app-registro',
-  imports: [CommonModule, 
-    FormsModule, 
-    RouterModule, 
+  imports: [CommonModule,
+    FormsModule,
+    RouterModule,
     SuccessPopupComponent,
-    CustomButtonBlue],
+    CustomButton],
   standalone: true,
   templateUrl: './registro.html',
   styleUrl: './registro.css',

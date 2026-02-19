@@ -9,9 +9,8 @@
                 <p class="mt-6 text-lg/8 text-pretty text-gray-300">Um lugar inteligente para registrar eventos, tarefas
                     e compromissos. Simplifique sua rotina e aumente sua produtividade.</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6 ">
-                    <app-custom-button-grey text="Login" [routerLink]="'/login'" className="font-semibold"></app-custom-button-grey>
-                    <app-custom-button-blue text="Cadastre-se" [routerLink]="'/registro'" className="rounded-md px-4 py-2 text-sm/6 font-semibold"></app-custom-button-blue>
-                    
+                    <app-custom-button text="Login" [variant]="'btn-bg-grey'" [routerLink]="'/login'"></app-custom-button>
+                    <app-custom-button text="Cadastre-se" [variant]="'btn-bg-blue'" [routerLink]="'/registro'"></app-custom-button>
                 </div>
             </div>
 
