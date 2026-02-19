@@ -40,7 +40,7 @@ export class CalendarWeekComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   // Calcula início (segunda) e fim (domingo)
   getWeekRange(date: Date) {
@@ -81,18 +81,20 @@ export class CalendarWeekComponent implements OnInit {
     return Math.ceil((pastDays + firstDayOfYear.getDay() + 1) / 7);
   }
 
-  // Organiza eventos por dia da semana
+  // Organiza eventos por dia da semana, ordenando pelo horário
   eventsByDay = computed(() => {
     const events = this.eventService.events();
     const days = this.weekDays();
 
     const mapped: { [key: string]: CalendarEvent[] } = {};
 
+    // Inicializa os dias da semana
     for (const day of days) {
       const key = day.toDateString();
       mapped[key] = [];
     }
 
+    // Distribui os eventos nos dias
     for (const e of events) {
       const start = new Date(e.startDate);
       const end = new Date(e.endDate);
@@ -108,6 +110,19 @@ export class CalendarWeekComponent implements OnInit {
 
         current.setDate(current.getDate() + 1);
       }
+    }
+
+    // Ordena os eventos de cada dia
+    for (const key in mapped) {
+      mapped[key].sort((a, b) => {
+        const startA = new Date(a.startDate).getTime();
+        const startB = new Date(b.startDate).getTime();
+        if (startA !== startB) return startA - startB;
+
+        const endA = new Date(a.endDate).getTime();
+        const endB = new Date(b.endDate).getTime();
+        return endA - endB;
+      });
     }
 
     return mapped;

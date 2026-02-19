@@ -97,19 +97,19 @@
                         <div class="bg-white rounded-xl shadow-md border border-indigo-100 p-4">
 
                             @if (viewMode() === 'month') {
-                            <app-calendar-month></app-calendar-month>
+                                <app-calendar-month></app-calendar-month>
                             }
 
                             <!-- Futuras views -->
 
                             @if (viewMode() === 'week') {
-                            <app-calendar-week></app-calendar-week>
+                                <app-calendar-week></app-calendar-week>
                             }
 
-                            <!-- @if (viewMode() === 'day') {
-                <app-calendar-day></app-calendar-day>
-              }
-              -->
+                            @if (viewMode() === 'day') {
+                                <app-calendar-day></app-calendar-day>
+                            }
+
 
                         </div>
 

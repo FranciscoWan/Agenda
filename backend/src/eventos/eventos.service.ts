@@ -55,55 +55,53 @@ export class EventsService {
     });
   }
 
-  async findByPeriod(userId: string, query: any) {
+async findByPeriod(userId: string, query: any) {
+  let startDate: Date | undefined;
+  let endDate: Date | undefined;
 
-    let startDate: Date | undefined;
-    let endDate: Date | undefined;
+  if (query.view === 'month') {
+    const year = Number(query.year);
+    const month = Number(query.month);
+    startDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
+    endDate = new Date(year, month, 0, 23, 59, 59, 999);
+  } 
+  else if (query.view === 'week') {
+    const year = Number(query.year);
+    const week = Number(query.week);
 
-    if (query.view === 'month') {
-      const year = Number(query.year);
-      const month = Number(query.month);
+    const referenceDate = new Date(year, 0, 1);
+    const firstDayOfWeek = new Date(referenceDate);
+    firstDayOfWeek.setDate(referenceDate.getDate() + (week - 1) * 7);
+    const dayOfWeek = firstDayOfWeek.getDay();
+    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - dayOfWeek);
 
-      startDate = new Date(year, month - 1, 1);
-      endDate = new Date(year, month, 0);
-      endDate.setHours(23, 59, 59, 999);
-    }
+    startDate = new Date(firstDayOfWeek);
+    startDate.setHours(0, 0, 0, 0);
 
-    if (query.view === 'week') {
-      const year = Number(query.year);
-      const week = Number(query.week);
-
-      const firstDayOfYear = new Date(year, 0, 1);
-      const dayOffset = (firstDayOfYear.getDay() + 6) % 7;
-
-      const firstMonday = new Date(firstDayOfYear);
-      firstMonday.setDate(firstDayOfYear.getDate() - dayOffset);
-
-      startDate = new Date(firstMonday);
-      startDate.setDate(firstMonday.getDate() + (week - 1) * 7);
-
-      endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 6);
-
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(23, 59, 59, 999);
-    }
-
-    if (!startDate || !endDate) {
-      throw new Error('Período inválido');
-    }
-
-    return this.eventRepository.find({
-      where: {
-        usuario_id: userId,
-        dataInicio: LessThanOrEqual(endDate),
-        dataFim: MoreThanOrEqual(startDate),
-      },
-      order: {
-        dataInicio: 'ASC'
-      }
-    });
+    endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
+    endDate.setHours(23, 59, 59, 999);
+  } 
+  else if (query.view === 'day') {
+    const year = Number(query.year);
+    const month = Number(query.month);
+    const day = Number(query.day);
+    startDate = new Date(year, month - 1, day, 0, 0, 0, 0);
+    endDate = new Date(year, month - 1, day, 23, 59, 59, 999);
+  } 
+  else {
+    throw new Error('Período inválido');
   }
+
+  return this.eventRepository.find({
+    where: {
+      usuario_id: userId,
+      dataInicio: LessThanOrEqual(endDate),
+      dataFim: MoreThanOrEqual(startDate),
+    },
+    order: { dataInicio: 'ASC' }
+  });
+}
 
   async delete(eventId: string, userId: string) {
     return this.eventRepository.delete({

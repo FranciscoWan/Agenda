@@ -10,7 +10,6 @@ import { CardNextEvents } from '../card-next-events/card-next-events';
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, CardNextEvents],
   templateUrl: './calendar-month.html',
-  styleUrl: './calendar-month.css',
 })
 export class CalendarMonthComponent implements OnInit {
 

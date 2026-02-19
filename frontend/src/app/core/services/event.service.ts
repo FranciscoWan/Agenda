@@ -32,7 +32,6 @@ export class EventService {
         `${this.apiUrl}?view=month&year=${year}&month=${month}`
       )
       .subscribe(data => {
-
         const mapped: CalendarEvent[] = data.map(e => ({
           id: e.id,
           title: e.titulo,
@@ -52,7 +51,6 @@ export class EventService {
         `${this.apiUrl}?view=week&year=${year}&week=${week}`
       )
       .subscribe(data => {
-
         const mapped: CalendarEvent[] = data.map(e => ({
           id: e.id,
           title: e.titulo,
@@ -62,6 +60,22 @@ export class EventService {
           endDate: e.dataFim
         }));
 
+        this.events.set(mapped);
+      });
+  }
+
+  loadEventsByDay(year: number, month: number, day: number) {
+    const url = `${this.apiUrl}?view=day&year=${year}&month=${month}&day=${day}`;
+    this.http.get<any[]>(url)
+      .subscribe(data => {
+        const mapped: CalendarEvent[] = data.map(e => ({
+          id: e.id,
+          title: e.titulo,      
+          description: e.descricao, 
+          color: e.cor,          
+          startDate: e.dataInicio,
+          endDate: e.dataFim
+        }));
         this.events.set(mapped);
       });
   }
