@@ -1,1 +1,26 @@
-<p>card-next-events works!</p>
+<div class="p-6 rounded-xl bg-white shadow-sm">
+
+  <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-2.5">
+
+      <!-- Cor dinâmica -->
+      <span
+        class="w-2.5 h-2.5 rounded-full"
+        [ngStyle]="{ 'background-color': color() }">
+      </span>
+
+      <p class="text-base font-medium text-gray-900">
+        {{ formattedDate }}
+      </p>
+
+    </div>
+  </div>
+  <h6 class="text-xl font-semibold text-black mb-1">
+    {{ title() }}
+  </h6>
+
+  <p class="text-base text-gray-600">
+    {{ description() }}
+  </p>
+
+</div>

@@ -5,6 +5,7 @@ import { map, Observable, tap } from 'rxjs';
 export interface CalendarEvent {
   id: string;
   title: string;
+  description: string;
   color: string;
   startDate: string;
   endDate: string;
@@ -33,6 +34,7 @@ export class EventService {
         const mapped: CalendarEvent[] = data.map(e => ({
           id: e.id,
           title: e.titulo,
+          description: e.descricao,
           color: e.cor,
           startDate: e.dataInicio,
           endDate: e.dataFim
@@ -48,6 +50,7 @@ export class EventService {
       const mapped: CalendarEvent = {
         id: e.id,
         title: (e as any).titulo,
+        description: (e as any).description,
         color: (e as any).cor,
         startDate: (e as any).dataInicio,
         endDate: (e as any).dataFim

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { Observable } from 'rxjs';
@@ -13,6 +13,9 @@ import { NewEvent } from './modal/modal-new-event/modal-new-event';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month';
 
 import { FaCirclePlusButton } from '../../shared/buttons/fa-circle-plus/fa-circle-plus';
+import { CardNextEvents } from './components/card-next-events/card-next-events';
+
+import { EventService } from '../../core/services/event.service';
 
 
 
@@ -27,16 +30,28 @@ type ViewMode = 'day' | 'week' | 'month';
     FontAwesomeModule,
     FaCirclePlusButton,
     NewEvent,
+    CardNextEvents
   ],
   templateUrl: './agenda.html'
 })
 export class Agenda {
+  upcomingEvents = computed(() => {
+  const now = new Date();
+  return this.eventService.events()
+    .filter(event => new Date(event.startDate) > now)
+    .sort((a, b) =>
+      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    )
+    .slice(0, 5);
+});
 
   faCirclePlus = faCirclePlus;
 
   isModalOpen = signal(false);
+  
 
   constructor(
+    private eventService: EventService,
     private authService: AuthService,
     private router: Router,) {
     this.username$ = this.authService.username$;
@@ -59,7 +74,7 @@ export class Agenda {
   }
 
   closeModal() {
-     this.isModalOpen.set(false);
+    this.isModalOpen.set(false);
   }
 
   logout(): void {

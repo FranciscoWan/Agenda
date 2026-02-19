@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, input, Input, InputSignal, Signal, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,16 +8,16 @@ import { Router } from '@angular/router';
 })
 export class CustomButtonBlue {
   // Texto do botão
-  @Input() text: string = 'Botão';
+  text: InputSignal<string> = input('Botão');
 
   // Rota opcional para o botão
-  @Input() routerLink?: string | any[];
+  routerLink?: InputSignal<string|any[]>;
 
   // Evento de clique opcional
-  @Input() click?: () => void;
+  click?: InputSignal< () => void>;
 
   // Classes extras que podem ser passadas pelo pai
-  @Input() className: string = '';
+  className: InputSignal<string> = input('');
 
 
   constructor(private router: Router) { }

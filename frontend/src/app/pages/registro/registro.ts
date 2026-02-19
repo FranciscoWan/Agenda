@@ -45,7 +45,7 @@ export class Registro {
       },
       error: (error) => {
         console.error('Erro completo:', error);
-        console.error('Erro do backend:', error.error);
+        console.log('Mensagem detalhada:', error.error?.message);
       }
 
     });
