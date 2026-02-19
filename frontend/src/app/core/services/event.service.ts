@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 export interface CalendarEvent {
   id: string;
@@ -19,7 +19,6 @@ export class EventService {
   private apiUrl = 'http://localhost:3000/events';
 
   events = signal<CalendarEvent[]>([]);
-  
 
   constructor(private http: HttpClient) { }
 
