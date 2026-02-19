@@ -26,8 +26,31 @@ export class EventService {
     return this.http.get<CalendarEvent[]>(this.apiUrl);
   }
 
-  loadEvents() {
-    this.http.get<any[]>(this.apiUrl)
+  loadEventsByMonth(year: number, month: number) {
+    this.http
+      .get<any[]>(
+        `${this.apiUrl}?view=month&year=${year}&month=${month}`
+      )
+      .subscribe(data => {
+
+        const mapped: CalendarEvent[] = data.map(e => ({
+          id: e.id,
+          title: e.titulo,
+          description: e.descricao,
+          color: e.cor,
+          startDate: e.dataInicio,
+          endDate: e.dataFim
+        }));
+
+        this.events.set(mapped);
+      });
+  }
+
+  loadEventsByWeek(year: number, week: number) {
+    this.http
+      .get<any[]>(
+        `${this.apiUrl}?view=week&year=${year}&week=${week}`
+      )
       .subscribe(data => {
 
         const mapped: CalendarEvent[] = data.map(e => ({

@@ -1,0 +1,87 @@
+<div class="w-full">
+
+    <!-- Cabeçalho -->
+    <div class="flex items-center mb-4">
+
+        <button (click)="previousWeek()" class="px-2 py-1 cursor-pointer">
+            <fa-icon [icon]="faAngleLeft"></fa-icon>
+        </button>
+
+        <button (click)="nextWeek()" class="px-2 py-1 cursor-pointer">
+            <fa-icon [icon]="faAngleRight"></fa-icon>
+        </button>
+
+        <h2 class="px-6 text-lg font-semibold text-indigo-700">
+            Semana de {{ weekDays()[0] | date:'dd/MM/yyyy' }}
+            - {{ weekDays()[6] | date:'dd/MM/yyyy' }}
+        </h2>
+
+    </div>
+
+    <!-- Dias da semana -->
+    <div class="grid grid-cols-7 text-center text-sm font-semibold text-indigo-600 border-b border-indigo-100 pb-2">
+        <div>Dom</div>
+        <div>Seg</div>
+        <div>Ter</div>
+        <div>Qua</div>
+        <div>Qui</div>
+        <div>Sex</div>
+        <div>Sáb</div>
+    </div>
+
+    <!-- Grid da semana -->
+    <div class="grid grid-cols-7 gap-px bg-indigo-100 rounded-lg overflow-hidden mt-2">
+
+        @for (day of weekDays(); track day) {
+
+        <div class="bg-white min-h-[120px] p-2 text-sm relative hover:bg-indigo-50 transition">
+
+            <!-- Número do dia -->
+            <span class="absolute top-2 right-2 text-gray-400 text-xs">
+                {{ day | date:'dd' }}
+            </span>
+
+            <!-- Eventos -->
+            <div class="mt-6 space-y-1">
+
+                @for (event of eventsByDay()[day.toDateString()]; track event.id) {
+                <div (click)="openEvent(event)"
+                    class="text-white text-xs px-2 py-1 rounded-md truncate hover:scale-110 cursor-pointer transition"
+                    [style.background]="event.color">
+                    {{ event.title }}
+                </div>
+                }
+
+            </div>
+
+        </div>
+
+        }
+
+    </div>
+
+</div>
+
+
+@if (isModalOpen() && selectedEvent()) {
+
+<!-- Overlay -->
+<div class="fixed inset-0 top-0 bg-black/50 flex items-center justify-center z-50" (click)="closeModal()">
+
+    <!-- Card central -->
+    <div class="bg-white rounded-xl shadow-xl w-[400px] p-6 relative" (click)="$event.stopPropagation()">
+
+        <app-card-next-events [title]="selectedEvent()!.title" [description]="selectedEvent()!.description"
+            [startDate]="selectedEvent()!.startDate" [endDate]="selectedEvent()!.endDate"
+            [color]="selectedEvent()!.color">
+        </app-card-next-events>
+
+        <button (click)="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-black cursor-pointer">
+            ✕
+        </button>
+
+    </div>
+
+</div>
+
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { Event } from './entities/evento.entity';
 import { CreateEventDto } from './dto/create-evento.dto';
 import { UpdateEventDto } from './dto/update-evento.dto';
@@ -9,6 +9,7 @@ import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class EventsService {
+  prisma: any;
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
@@ -26,31 +27,81 @@ export class EventsService {
     return this.eventRepository.save(event);
   }
 
-async update(
-  id: string,
-  data: UpdateEventDto,
-  userId: string,
-): Promise<Event> {
-  await this.eventRepository.update(
-    { id, usuario_id: userId },
-    data,
-  );
+  async update(
+    id: string,
+    data: UpdateEventDto,
+    userId: string,
+  ): Promise<Event> {
+    await this.eventRepository.update(
+      { id, usuario_id: userId },
+      data,
+    );
 
-  const updatedEvent = await this.eventRepository.findOne({
-    where: { id, usuario_id: userId },
-  });
+    const updatedEvent = await this.eventRepository.findOne({
+      where: { id, usuario_id: userId },
+    });
 
-  if (!updatedEvent) {
-    throw new NotFoundException('Evento não encontrado');
+    if (!updatedEvent) {
+      throw new NotFoundException('Evento não encontrado');
+    }
+
+    return updatedEvent;
   }
-
-  return updatedEvent;
-}
 
   async findAll(userId: string): Promise<Event[]> {
     return this.eventRepository.find({
       where: { usuario_id: userId },
       order: { dataInicio: 'ASC' },
+    });
+  }
+
+  async findByPeriod(userId: string, query: any) {
+
+    let startDate: Date | undefined;
+    let endDate: Date | undefined;
+
+    if (query.view === 'month') {
+      const year = Number(query.year);
+      const month = Number(query.month);
+
+      startDate = new Date(year, month - 1, 1);
+      endDate = new Date(year, month, 0);
+      endDate.setHours(23, 59, 59, 999);
+    }
+
+    if (query.view === 'week') {
+      const year = Number(query.year);
+      const week = Number(query.week);
+
+      const firstDayOfYear = new Date(year, 0, 1);
+      const dayOffset = (firstDayOfYear.getDay() + 6) % 7;
+
+      const firstMonday = new Date(firstDayOfYear);
+      firstMonday.setDate(firstDayOfYear.getDate() - dayOffset);
+
+      startDate = new Date(firstMonday);
+      startDate.setDate(firstMonday.getDate() + (week - 1) * 7);
+
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+    }
+
+    if (!startDate || !endDate) {
+      throw new Error('Período inválido');
+    }
+
+    return this.eventRepository.find({
+      where: {
+        usuario_id: userId,
+        dataInicio: LessThanOrEqual(endDate),
+        dataFim: MoreThanOrEqual(startDate),
+      },
+      order: {
+        dataInicio: 'ASC'
+      }
     });
   }
 

@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { EventsService } from './eventos.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,9 +26,15 @@ export class EventsController {
   ) {
     return this.eventsService.create(body, req.user.userId);
   }
+  
   @Get()
-  async findAll(@Request() req) {
-    return this.eventsService.findAll(req.user.userId);
+  async findByPeriod(
+    @Query() query: any,
+    @Request() req
+  ) {
+    const userId = req.user.id;
+
+    return this.eventsService.findByPeriod(userId, query);
   }
 
   @Delete(':id')

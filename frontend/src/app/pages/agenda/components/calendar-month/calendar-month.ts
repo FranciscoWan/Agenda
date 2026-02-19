@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +25,13 @@ export class CalendarMonthComponent implements OnInit {
 
   selectedEvent = signal<CalendarEvent | null>(null);
   isModalOpen = signal(false);
+
+  loadCurrentMonthEvents() {
+    this.eventService.loadEventsByMonth(
+      this.currentYear(),
+      this.currentMonth() + 1 // porque JS começa do 0
+    );
+  }
 
   eventsByDay = computed(() => {
     const currentYear = this.currentYear()
@@ -62,22 +69,24 @@ export class CalendarMonthComponent implements OnInit {
     return mapped;
   })
 
-  monthNames = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril',
-    'Maio', 'Junho', 'Julho', 'Agosto',
-    'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ];
-
-  get monthTitle(): string {
-    return `${this.monthNames[this.currentMonth()]} ${this.currentYear()}`;
-  }
+  monthDate = computed(() =>
+    new Date(this.currentYear(), this.currentMonth(), 1)
+  );
 
   constructor(private eventService: EventService) {
+
+    // Atualiza eventos
+    effect(() => {
+      const year = this.currentYear();
+      const month = this.currentMonth();
+
+      this.eventService.loadEventsByMonth(year, month + 1);
+    });
   }
 
   ngOnInit() {
     this.initializeCalendar();
-    this.eventService.loadEvents();
+    this.loadCurrentMonthEvents();
   }
 
   initializeCalendar() {
@@ -103,7 +112,7 @@ export class CalendarMonthComponent implements OnInit {
   previousMonth() {
     if (this.currentMonth() === 0) {
       this.currentMonth.set(11);
-      this.currentYear.set(-1);
+      this.currentYear.set(this.currentYear() - 1);
     } else {
       this.currentMonth.set(this.currentMonth() - 1);
     }
@@ -112,7 +121,7 @@ export class CalendarMonthComponent implements OnInit {
   nextMonth() {
     if (this.currentMonth() === 11) {
       this.currentMonth.set(0);
-      this.currentYear.set(+1);
+      this.currentYear.set(this.currentYear() + 1);
     } else {
       this.currentMonth.set(this.currentMonth() + 1);
     }

@@ -9,7 +9,7 @@ import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { NewEvent } from './modal/modal-new-event/modal-new-event';
 
 // import { CalendarDayComponent } from '../calendar/calendar-day.component';
-// import { CalendarWeekComponent } from '../calendar/calendar-week.component';
+import { CalendarWeekComponent } from './components/calendar-week/calendar-week';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month';
 
 import { FaCirclePlusButton } from '../../shared/buttons/fa-circle-plus/fa-circle-plus';
@@ -27,6 +27,7 @@ type ViewMode = 'day' | 'week' | 'month';
   imports: [
     CommonModule,
     CalendarMonthComponent,
+    CalendarWeekComponent,
     FontAwesomeModule,
     FaCirclePlusButton,
     NewEvent,
