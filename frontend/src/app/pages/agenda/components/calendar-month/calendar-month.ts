@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { EventService, CalendarEvent } from '../../../../core/services/event.service';
+import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
   selector: 'app-calendar-month',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, CardNextEvents],
   templateUrl: './calendar-month.html',
   styleUrl: './calendar-month.css',
 })
@@ -21,6 +22,9 @@ export class CalendarMonthComponent implements OnInit {
   currentYear = signal(new Date().getFullYear());
   daysInMonth: number[] = [];
   firstDayOfMonth!: number;
+
+  selectedEvent = signal<CalendarEvent | null>(null);
+  isModalOpen = signal(false);
 
   eventsByDay = computed(() => {
     const currentYear = this.currentYear()
@@ -116,5 +120,15 @@ export class CalendarMonthComponent implements OnInit {
 
   formatDateKey(date: Date): string {
     return `${date.getFullYear()}-${date.getMonth()}`;
+  }
+
+  openEvent(event: CalendarEvent) {
+    this.selectedEvent.set(event);
+    this.isModalOpen.set(true);
+  }
+
+  closeModal() {
+    this.isModalOpen.set(false);
+    this.selectedEvent.set(null);
   }
 }
