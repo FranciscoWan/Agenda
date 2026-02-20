@@ -8,7 +8,6 @@
 .custom-glass {
     padding: 2%;
     width: 36%;
-    background: rgba(197, 197, 197, 0.144);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-radius: 20px;

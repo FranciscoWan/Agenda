@@ -20,14 +20,13 @@ export class NewEvent {
   descricao = '';
   dataInicio = '';
   dataFim = '';
-  cor = '#22C55E';
+  cor = 'var(--color-green)';
 
   cores = [
-    { nome: 'Vermelho', valor: '#EF4444' },
-    { nome: 'Laranja', valor: '#F97316' },
-    { nome: 'Azul', valor: '#3B82F6' },
-    { nome: 'Roxo', valor: '#8B5CF6' },
-    { nome: 'Verde', valor: '#22C55E' }
+    { nome: 'Laranja', valor: 'var(--color-orange)' },
+    { nome: 'Azul', valor: 'var(--color-cyan)' },
+    { nome: 'Roxo', valor: 'var(--color-purple)' },
+    { nome: 'Verde', valor: 'var(--color-green)' }
   ];
 
   constructor(
@@ -75,6 +74,6 @@ export class NewEvent {
     this.descricao = '';
     this.dataInicio = '';
     this.dataFim = '';
-    this.cor = '#22C55E';
+    this.cor = 'var(--color-green)';
   }
 }

@@ -51,7 +51,7 @@
                 Cor
             </label>
 
-            <div class="flex gap-3">
+            <div class="flex justify-around">
 
                 @for (c of cores; track c.valor) {
                 <button type="button" (click)="cor = c.valor" [class.ring-3]="cor === c.valor"

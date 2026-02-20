@@ -3,22 +3,22 @@
   <!-- Cabeçalho -->
   <div class="flex items-center mb-4">
 
-    <button (click)="previousMonth()" class="px-2 py-1 cursor-pointer">
+    <button (click)="previousMonth()" class="px-2 py-1 cursor-pointer text-gray-100 hover:scale-110 transition-all duration-200">
       <fa-icon [icon]="faAngleLeft"></fa-icon>
     </button>
 
-    <button (click)="nextMonth()" class="px-2 py-1 cursor-pointer">
+    <button (click)="nextMonth()" class="px-2 py-1 cursor-pointer text-gray-100 hover:scale-110 transition-all duration-200">
       <fa-icon [icon]="faAngleRight"></fa-icon>
     </button>
 
-    <h2 class="px-6 text-lg font-semibold text-indigo-700">
+    <h2 class="px-6 text-lg font-semibold text-gray-100">
       {{ monthDate() | date:'MMMM yyyy' }}
     </h2>
 
   </div>
 
   <!-- Dias da semana -->
-  <div class="grid grid-cols-7 text-center text-sm font-semibold text-indigo-600 border-b border-indigo-100 pb-2">
+  <div class="grid grid-cols-7 text-center text-sm font-semibold text-gray-200 border-b border-gray-100 pb-2">
     <div>Dom</div>
     <div>Seg</div>
     <div>Ter</div>
@@ -29,16 +29,16 @@
   </div>
 
   <!-- Grid -->
-  <div class="grid grid-cols-7 gap-px bg-indigo-100 rounded-lg overflow-hidden mt-2">
+  <div class="grid grid-cols-7 gap-px bg-gray-400 overflow-hidden mt-2">
 
     <!-- Espaços vazios -->
     @for (empty of [].constructor(firstDayOfMonth); track $index) {
-    <div class="bg-white min-h-[100px]"></div>
+    <div class="min-h-[100px] bg-gray-100" ></div>
     }
 
     <!-- Dias do mês -->
     @for (day of daysInMonth; track day) {
-      <div class="bg-white min-h-[100px] p-2 text-sm relative hover:bg-indigo-50 transition cursor-pointer">
+      <div class="bg-[var(--color-black-background)] min-h-[100px] p-2 text-sm relative hover:bg-neutral-600 transition cursor-pointer">
         <span class="absolute top-2 right-2 text-gray-400 text-xs">
           {{ day }}
         </span>
@@ -46,7 +46,7 @@
 
           @for (event of this.eventsByDay()[day]; track event.id) {
             <div (click)="openEvent(event)"
-              class="text-white text-xs px-2 py-1 rounded-md truncate hover:scale-110 cursor-pointer"
+              class="text-black text-xs font-bold px-2 py-1 rounded-md truncate hover:scale-110 cursor-pointer"
               [style.background]="event.color">
               {{ event.title }}
             </div>
@@ -68,7 +68,7 @@
 
     <!-- Card central -->
     <div
-      class="bg-white rounded-xl shadow-xl w-[400px] p-6 relative"
+      class="rounded-xl shadow-xl w-[600px] p-6 relative"
       (click)="$event.stopPropagation()">
 
       <app-card-next-events
@@ -81,7 +81,7 @@
 
       <button
         (click)="closeModal()"
-        class="absolute top-2 right-2 text-gray-500 hover:text-black cursor-pointer">
+        class="absolute top-2 right-2 text-gray-200 hover:text-gray-500 cursor-pointer">
         ✕
       </button>
 

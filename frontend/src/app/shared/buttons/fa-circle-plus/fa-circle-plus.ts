@@ -7,14 +7,20 @@ import { faCirclePlus, IconDefinition } from '@fortawesome/free-solid-svg-icons'
     standalone: true,
     imports: [FontAwesomeModule],
     template: `
-    <button class="px-8 py-2 text-3xl cursor-pointer" (click)="onClick()">
-        <fa-icon [icon]="icon()" style="color: rgb(29, 78, 216);" class="pointer-events-none">
+    <button
+    (click)="onClick()"
+    class="w-6 h-6 flex items-center justify-center 
+            bg-white rounded-full shadow-md 
+            hover:scale-105 transition-all duration-200 m-4">
+        <fa-icon
+            [icon]="icon()"
+            class="text-blue-700 text-4xl pointer-events-none m-4 hover:scale-105 transition-all duration-200">
         </fa-icon>
     </button>
   `
 })
 export class FaCirclePlusButton {
-    
+
     icon = input<IconDefinition>(faCirclePlus);
     clicked = output<void>();
 

@@ -2,15 +2,15 @@
 
     <!-- Cabeçalho -->
     <div class="flex items-center mb-4">
-        <button (click)="previousDay()" class="px-2 py-1 cursor-pointer">
+        <button (click)="previousDay()" class="ppx-2 py-1 cursor-pointer text-gray-100 hover:scale-110 transition-all duration-200">
             <fa-icon [icon]="faAngleLeft"></fa-icon>
         </button>
 
-        <button (click)="nextDay()" class="px-2 py-1 cursor-pointer">
+        <button (click)="nextDay()" class="px-2 py-1 cursor-pointer text-gray-100 hover:scale-110 transition-all duration-200">
             <fa-icon [icon]="faAngleRight"></fa-icon>
         </button>
 
-        <h2 class="px-6 text-lg font-semibold text-indigo-700">
+        <h2 class="px-6 text-lg font-semibold text-gray-100">
             {{ currentDate() | date:'EEEE, dd/MM/yyyy' }}
         </h2>
     </div>
@@ -19,7 +19,7 @@
     <div class="space-y-2">
         @for (event of eventsOfDay(); track event.id) {
         <div (click)="openEvent(event)"
-            class="text-white text-sm px-3 py-2 rounded-md truncate hover:scale-105 cursor-pointer transition"
+            class="text-black text-xs font-bold px-2 py-1 rounded-md truncate hover:scale-102 cursor-pointer"
             [style.background]="event.color">
             {{ event.startDate | date:'HH:mm' }} - {{ event.endDate | date:'HH:mm' }}: {{ event.title }}
         </div>
@@ -37,14 +37,14 @@
 <div class="fixed inset-0 top-0 bg-black/50 flex items-center justify-center z-50" (click)="closeModal()">
 
     <!-- Card central -->
-    <div class="bg-white rounded-xl shadow-xl w-[400px] p-6 relative" (click)="$event.stopPropagation()">
+    <div class="rounded-xl shadow-xl w-[600px] p-6 relative" (click)="$event.stopPropagation()">
 
         <app-card-next-events [title]="selectedEvent()!.title" [description]="selectedEvent()!.description"
             [startDate]="selectedEvent()!.startDate" [endDate]="selectedEvent()!.endDate"
             [color]="selectedEvent()!.color">
         </app-card-next-events>
 
-        <button (click)="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-black cursor-pointer">
+        <button (click)="closeModal()" class="absolute top-2 right-2 text-gray-200 hover:text-gray-500 cursor-pointer">
             ✕
         </button>
 
