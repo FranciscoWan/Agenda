@@ -73,14 +73,6 @@ export class CalendarMonthComponent implements OnInit {
   );
 
   constructor(private eventService: EventService) {
-
-    // Atualiza eventos
-    effect(() => {
-      const year = this.currentYear();
-      const month = this.currentMonth();
-
-      this.eventService.loadEventsByMonth(year, month + 1);
-    });
   }
 
   ngOnInit() {
@@ -115,6 +107,7 @@ export class CalendarMonthComponent implements OnInit {
     } else {
       this.currentMonth.set(this.currentMonth() - 1);
     }
+    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1);
   }
 
   nextMonth() {
@@ -124,6 +117,7 @@ export class CalendarMonthComponent implements OnInit {
     } else {
       this.currentMonth.set(this.currentMonth() + 1);
     }
+    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1);
   }
 
   formatDateKey(date: Date): string {

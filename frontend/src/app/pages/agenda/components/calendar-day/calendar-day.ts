@@ -29,16 +29,6 @@ export class CalendarDayComponent {
   isModalOpen = signal(false);
 
   constructor(private eventService: EventService) {
-
-    // Sempre que currentDate mudar → carregar eventos do dia
-    effect(() => {
-      const date = this.currentDate();
-      this.eventService.loadEventsByDay(
-        date.getFullYear(),
-        date.getMonth() + 1, // JS = 0..11
-        date.getDate()
-      );
-    });
   }
 
   // Eventos do dia, ordenados por hora
@@ -77,12 +67,22 @@ export class CalendarDayComponent {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() - 1);
     this.currentDate.set(date);
+      this.eventService.loadEventsByDay(
+        date.getFullYear(),
+        date.getMonth() + 1, 
+        date.getDate()
+      );
   }
 
   nextDay() {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() + 1);
     this.currentDate.set(date);
+    this.eventService.loadEventsByDay(
+      date.getFullYear(),
+      date.getMonth() + 1, 
+      date.getDate()
+    );
   }
 
   // Abrir modal
