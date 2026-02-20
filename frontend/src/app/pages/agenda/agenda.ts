@@ -34,7 +34,8 @@ type ViewMode = 'day' | 'week' | 'month';
     NewEvent,
     CardNextEvents
   ],
-  templateUrl: './agenda.html'
+  templateUrl: './agenda.html',
+  styleUrl: './agenda.css',
 })
 export class Agenda {
   upcomingEvents = computed(() => {
@@ -50,7 +51,6 @@ export class Agenda {
   faCirclePlus = faCirclePlus;
 
   isModalOpen = signal(false);
-  
 
   constructor(
     private eventService: EventService,

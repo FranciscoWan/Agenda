@@ -12,3 +12,11 @@
     }
 
 } */
+
+:root{
+    --color-purple: #CC60FA;
+    --color-orange: #FA7F60;
+    --color-green: #8FFA60;
+    --color-cyan: #60DCFA;
+    --color-black-background:  #3b3b3b;
+}

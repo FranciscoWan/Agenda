@@ -8,7 +8,7 @@ import { faCirclePlus, IconDefinition } from '@fortawesome/free-solid-svg-icons'
     imports: [FontAwesomeModule],
     template: `
     <button class="px-8 py-2 text-3xl cursor-pointer" (click)="onClick()">
-        <fa-icon [icon]="icon()" style="color: rgba(79, 70, 229, 1.00);" class="pointer-events-none">
+        <fa-icon [icon]="icon()" style="color: rgb(29, 78, 216);" class="pointer-events-none">
         </fa-icon>
     </button>
   `

@@ -1,4 +1,4 @@
-<section class="relative bg-stone-50">
+<section class="relative" style="background-color: var(--color-black-background)">
 
     <!-- Background effects -->
     <div class="bg-sky-400 w-full sm:w-40 h-40 rounded-full absolute top-1 opacity-20 max-sm:right-0 sm:left-56 z-0">
@@ -8,7 +8,7 @@
 
     <div class="w-full pb-24 relative z-10 backdrop-blur-3xl">
         <div class="flex items-center justify-end relative right-20 py-8 ">
-            <div class="bg-gray-700 py-1 rounded-md text-sm font-medium pl-8">
+            <div class="py-1 rounded-md text-sm font-medium pl-8">
                 @if (username$ | async; as username) {
                 <span class="text-sm text-white">
                     Olá, {{ username }}
@@ -28,11 +28,11 @@
                 <!-- ================= LEFT SIDE ================= -->
                 <div class="xl:col-span-5">
 
-                    <h2 class="text-3xl leading-tight text-gray-900 mb-1.5 font-semibold">
+                    <h2 class="text-3xl leading-tight text-gray-100 mb-1.5 font-semibold">
                         Próximos eventos
                     </h2>
 
-                    <p class="text-lg text-gray-600 mb-8">
+                    <p class="text-lg text-gray-200 mb-8">
                         Não perca sua programação
                     </p>
 
@@ -57,7 +57,7 @@
                 <!-- ================= RIGHT SIDE ================= -->
                 <div class="xl:col-span-7">
 
-                    <div class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl h-full shadow-sm">
+                    <div class="bg-neutral-800 p-6 h-full border-custom">
 
                         <!-- Header -->
                         <div class="flex items-center justify-between mb-6">
@@ -68,23 +68,23 @@
                             <div class="flex">
                                 <fa-circle-plus-button (clicked)="openModal()"></fa-circle-plus-button>
 
-                                <div class="flex gap-2 bg-white p-1 rounded-lg shadow-sm border border-indigo-100">
+                                <div class="flex gap-2 p-1 shadow-sm border-custom" style="background-color: var(--color-black-background)">
 
-                                    <button (click)="setView('day')" [class.bg-indigo-600]="viewMode() === 'day'"
+                                    <button (click)="setView('day')" [class.bg-blue-700]="viewMode() === 'day'"
                                         [class.text-white]="viewMode() === 'day'"
-                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-indigo-100">
+                                        class="px-4 py-2 rounded-md text-sm font-medium text-white transition-all duration-200 hover:bg-cyan-100">
                                         Dia
                                     </button>
 
-                                    <button (click)="setView('week')" [class.bg-indigo-600]="viewMode() === 'week'"
+                                    <button (click)="setView('week')" [class.bg-blue-700]="viewMode() === 'week'"
                                         [class.text-white]="viewMode() === 'week'"
-                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-indigo-100">
+                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-cyan-100">
                                         Semana
                                     </button>
 
-                                    <button (click)="setView('month')" [class.bg-indigo-600]="viewMode() === 'month'"
+                                    <button (click)="setView('month')" [class.bg-blue-700]="viewMode() === 'month'"
                                         [class.text-white]="viewMode() === 'month'"
-                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-indigo-100">
+                                        class="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-cyan-100">
                                         Mês
                                     </button>
 
@@ -94,7 +94,7 @@
                         </div>
 
                         <!-- Conteúdo -->
-                        <div class="bg-white rounded-xl shadow-md border border-indigo-100 p-4">
+                        <div class=" rounded-xl shadow-md p-4 border-custom" style="background-color: var(--color-black-background)">
 
                             @if (viewMode() === 'month') {
                                 <app-calendar-month></app-calendar-month>
