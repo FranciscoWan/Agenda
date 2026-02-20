@@ -20,13 +20,13 @@ export class NewEvent {
   descricao = '';
   dataInicio = '';
   dataFim = '';
-  cor = 'var(--color-green)';
+  cor = '#8FFA60';
 
   cores = [
-    { nome: 'Laranja', valor: 'var(--color-orange)' },
-    { nome: 'Azul', valor: 'var(--color-cyan)' },
-    { nome: 'Roxo', valor: 'var(--color-purple)' },
-    { nome: 'Verde', valor: 'var(--color-green)' }
+    { nome: 'Laranja', valor: '#FA7F60' },
+    { nome: 'Azul', valor: '#60DCFA' },
+    { nome: 'Roxo', valor: '#CC60FA' },
+    { nome: 'Verde', valor: '#8FFA60' }
   ];
 
   constructor(
@@ -74,6 +74,6 @@ export class NewEvent {
     this.descricao = '';
     this.dataInicio = '';
     this.dataFim = '';
-    this.cor = 'var(--color-green)';
+    this.cor = '#8FFA60';
   }
 }
