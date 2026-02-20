@@ -1,16 +1,17 @@
-import { Component, output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DateTimePicker } from '../../../../shared/date-time-picker/date-time-picker';
 import { EventService } from '../../../../core/services/event.service'
+import { PopupModalComponent } from '../../../../shared/popup-modal/popup-modal';
 
 
 @Component({
   selector: 'app-new-event',
   standalone: true,
-  imports: [FormsModule, CommonModule, DateTimePicker],
+  imports: [FormsModule, CommonModule, DateTimePicker, PopupModalComponent],
   templateUrl: './modal-new-event.html',
   styleUrl: './modal-new-event.css',
 })
@@ -21,6 +22,10 @@ export class NewEvent {
   dataInicio = '';
   dataFim = '';
   cor = '#8FFA60';
+
+  showPopup = signal(false);
+  popupMessage = '';
+  popupType: 'success' | 'error' | 'warning' = 'success';
 
   cores = [
     { nome: 'Laranja', valor: '#FA7F60' },
@@ -58,12 +63,16 @@ export class NewEvent {
     this.eventService.createEvent(payload)
       .subscribe({
         next: () => {
-          alert('Evento criado com sucesso!');
+        this.popupMessage = 'Evento salvo com sucesso';
+        this.popupType = 'success';
+        this.showPopup.set(true);
           this.resetForm();
         },
-        error: (err) => {
-          console.error(err);
-          alert('Erro ao criar evento');
+        error: (error) => {
+        this.popupMessage = error?.error?.message;
+        this.popupType = 'error';
+        this.showPopup.set(true);
+        throw new Error(this.popupMessage);
         }
       });
       this.resetForm()

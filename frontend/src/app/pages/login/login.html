@@ -1,5 +1,5 @@
 <div class="px-6 py-12 lg:px-8 custom-div" style="background-color: var(--color-black-background)">
-    
+
   <div class="custom-glass bg-zinc-900">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"
@@ -35,5 +35,7 @@
         </div>
       </form>
     </div>
+    <!-- Modal -->
+    <popup-modal [isVisible]="showPopup()" [message]="popupMessage" [type]="popupType" (close)="showPopup.set(false)"></popup-modal>
   </div>
 </div>

@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 
 import { RouterModule } from '@angular/router';
-import { SuccessPopupComponent } from '../../shared/success-popup/success-popup';
 import { signal } from '@angular/core';
 import { CustomButton } from "../../shared/buttons/custom-button/custom-button";
+import { PopupModalComponent } from '../../shared/popup-modal/popup-modal';
 
 
 
@@ -15,8 +15,8 @@ import { CustomButton } from "../../shared/buttons/custom-button/custom-button";
   imports: [CommonModule,
     FormsModule,
     RouterModule,
-    SuccessPopupComponent,
-    CustomButton],
+    CustomButton,
+    PopupModalComponent],
   standalone: true,
   templateUrl: './registro.html',
   styleUrl: './registro.css',
@@ -25,8 +25,9 @@ export class Registro {
   username = '';
   password = '';
   telefone = '';
-
-  showSuccessPopup = signal(false);
+  showPopup = signal(false);
+  popupMessage = '';
+  popupType: 'success' | 'error' | 'warning' = 'success';
 
   constructor(private authService: AuthService) { }
 
@@ -39,13 +40,15 @@ export class Registro {
 
     this.authService.register(data).subscribe({
       next: (response) => {
-        this.showSuccessPopup.set(true);
+        this.popupMessage = response?.response?.message || 'Usuário criado com sucesso!';
+        this.showPopup.set(true);
         this.resetForm()
-        console.log('Usuário criado:', response);
       },
       error: (error) => {
-        console.error('Erro completo:', error);
-        console.log('Mensagem detalhada:', error.error?.message);
+        this.popupMessage = error?.error?.message;
+        this.popupType = 'error';
+        this.showPopup.set(true);
+        throw new Error(this.popupMessage);
       }
 
     });
@@ -57,6 +60,6 @@ export class Registro {
     this.telefone = '';
   }
   closePopup() {
-    this.showSuccessPopup.set(false);
+    this.showPopup.set(false);
   }
 }

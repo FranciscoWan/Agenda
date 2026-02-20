@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CustomButton } from "../../shared/buttons/custom-button/custom-button";
+import { PopupModalComponent } from '../../shared/popup-modal/popup-modal';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CustomButton],
+  imports: [FormsModule, CustomButton, PopupModalComponent],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   username = '';
   password = '';
+  showPopup = signal(false);
+  popupMessage = '';
+  popupType: 'success' | 'error' | 'warning' = 'success';
 
   constructor(
     private authService: AuthService,
@@ -27,15 +31,14 @@ export class Login {
 
     this.authService.login(data).subscribe({
       next: () => {
-
-        // O token já foi salvo automaticamente pelo AuthService
-        console.log('Login realizado com sucesso');
-
         // Redireciona para agenda
         this.router.navigate(['/agenda']);
       },
       error: (error) => {
-        console.error('Erro no login:', error);
+        this.popupMessage = error?.error?.message || 'Usuário ou senha inválidos';
+        this.popupType = 'error';
+        this.showPopup.set(true);
+        throw new Error(this.popupMessage);
       }
     });
   }

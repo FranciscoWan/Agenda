@@ -41,7 +41,8 @@
             <app-custom-button type="submit" text="Criar conta" [variant]="'btn-bg-blue'" className="flex w-full mt-6 font-light"></app-custom-button>
           </div>
       </form>
-      <app-success-popup [message]="'Conta criada com sucesso!'" [isVisible]="showSuccessPopup()" (close)="closePopup()"></app-success-popup>
+      <!-- Modal -->
+      <popup-modal [isVisible]="showPopup()" [message]="popupMessage" [type]="popupType" (close)="showPopup.set(false)"></popup-modal>
 
       <p class="mt-1 text-center text-sm/6 text-gray-400">
         Já possui uma conta?
