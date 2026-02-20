@@ -24,31 +24,30 @@ export class CalendarWeekComponent implements OnInit {
   weekDays = signal<Date[]>([]);
 
   constructor(private eventService: EventService) {
-
-    // Sempre que a data mudar → recalcula semana + busca eventos
-    effect(() => {
-      const date = this.currentDate();
-
-      const { start, end } = this.getWeekRange(date);
-
-      this.generateWeekDays(start);
-
-      this.eventService.loadEventsByWeek(
-        start.getFullYear(),
-        this.getWeekNumber(start)
-      );
-    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadWeek(this.currentDate());
+  }
 
-  // Calcula início (segunda) e fim (domingo)
+  private loadWeek(date: Date) {
+    const { start } = this.getWeekRange(date);
+
+    this.generateWeekDays(start);
+
+    this.eventService.loadEventsByWeek(
+      start.getFullYear(),
+      this.getWeekNumber(start)
+    );
+  }
+  // Calcula início (domingo) e fim (segunda)
   getWeekRange(date: Date) {
     const current = new Date(date);
-    const day = (current.getDay() + 6) % 7; // transforma domingo=6
+
+    const dayOfWeek = current.getDay(); // 0 (Dom) → 6 (Sáb)
 
     const start = new Date(current);
-    start.setDate(current.getDate() - day);
+    start.setDate(current.getDate() - dayOfWeek);
     start.setHours(0, 0, 0, 0);
 
     const end = new Date(start);
@@ -132,12 +131,14 @@ export class CalendarWeekComponent implements OnInit {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() - 7);
     this.currentDate.set(date);
+    this.loadWeek(date);
   }
 
   nextWeek() {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() + 7);
     this.currentDate.set(date);
+    this.loadWeek(date);
   }
 
   openEvent(event: CalendarEvent) {
