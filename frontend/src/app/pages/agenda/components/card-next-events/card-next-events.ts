@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-card-next-events',
   imports: [CommonModule],
   templateUrl: './card-next-events.html',
-  styleUrl: './card-next-events.css',
 })
 export class CardNextEvents {
 
@@ -22,7 +21,11 @@ export class CardNextEvents {
     const date = start.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'short',
-      year: 'numeric'
+    });
+
+    const endDate = end.toLocaleDateString('pt-BR',{
+      day: '2-digit',
+      month: 'short',
     });
 
     const startTime = start.toLocaleTimeString('pt-BR', {
@@ -35,6 +38,6 @@ export class CardNextEvents {
       minute: '2-digit'
     });
 
-    return `${date} / ${startTime} - ${endTime}`;
+    return `${date} - ${startTime} / ${endDate} - ${endTime}`;
   }
 }

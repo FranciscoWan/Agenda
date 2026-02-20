@@ -69,7 +69,7 @@
 <div class="fixed inset-0 top-0 bg-black/50 flex items-center justify-center z-50" (click)="closeModal()">
 
     <!-- Card central -->
-    <div class="rounded-xl shadow-xl w-[600px] p-6 relative" (click)="$event.stopPropagation()">
+    <div class="rounded-xl w-[600px] p-6 relative" (click)="$event.stopPropagation()">
 
         <app-card-next-events [title]="selectedEvent()!.title" [description]="selectedEvent()!.description"
             [startDate]="selectedEvent()!.startDate" [endDate]="selectedEvent()!.endDate"
