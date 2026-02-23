@@ -24,6 +24,33 @@ export class CalendarMonthComponent implements OnInit {
 
   selectedEvent = signal<CalendarEvent | null>(null);
   isModalOpen = signal(false);
+  constructor(private eventService: EventService) {
+  }
+  
+  ngOnInit() {
+    this.initializeCalendar();
+    this.loadCurrentMonthEvents();
+  }
+
+  initializeCalendar() {
+    const totalDays = new Date(
+      this.currentYear(),
+      this.currentMonth() + 1,
+      0
+    ).getDate();
+
+
+    this.daysInMonth = Array.from(
+      { length: totalDays },
+      (_, i) => i + 1
+    );
+
+    this.firstDayOfMonth = new Date(
+      this.currentYear(),
+      this.currentMonth(),
+      1
+    ).getDay();
+  }
 
   loadCurrentMonthEvents() {
     this.eventService.loadEventsByMonth(
@@ -72,32 +99,7 @@ export class CalendarMonthComponent implements OnInit {
     new Date(this.currentYear(), this.currentMonth(), 1)
   );
 
-  constructor(private eventService: EventService) {
-  }
 
-  ngOnInit() {
-    this.initializeCalendar();
-    this.loadCurrentMonthEvents();
-  }
-
-  initializeCalendar() {
-    const totalDays = new Date(
-      this.currentYear(),
-      this.currentMonth() + 1,
-      0
-    ).getDate();
-
-    this.daysInMonth = Array.from(
-      { length: totalDays },
-      (_, i) => i + 1
-    );
-
-    this.firstDayOfMonth = new Date(
-      this.currentYear(),
-      this.currentMonth(),
-      1
-    ).getDay();
-  }
 
 
   previousMonth() {

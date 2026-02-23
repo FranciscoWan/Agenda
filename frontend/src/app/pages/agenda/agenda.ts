@@ -33,7 +33,6 @@ type ViewMode = 'day' | 'week' | 'month';
     CardNextEvents
   ],
   templateUrl: './agenda.html',
-  styleUrl: './agenda.css',
 })
 
 export class Agenda {
@@ -74,23 +73,14 @@ export class Agenda {
     this.router.navigate(['/login']);
   }
 
-onScroll(event: Event) {
-  console.log('scrollando');
+  onScroll(event: Event) {
+    const element = event.target as HTMLElement;
 
-  const element = event.target as HTMLElement;
+    const atBottom =
+      element.scrollHeight - element.scrollTop <= element.clientHeight + 5;
 
-  const atBottom =
-    element.scrollHeight - element.scrollTop <= element.clientHeight + 5;
-
-  console.log({
-    scrollHeight: element.scrollHeight,
-    scrollTop: element.scrollTop,
-    clientHeight: element.clientHeight,
-    atBottom
-  });
-
-  if (atBottom) {
-    this.eventService.loadMore();
+    if (atBottom) {
+      this.eventService.loadMore();
+    }
   }
-}
 }

@@ -7,6 +7,8 @@ import { routes } from './app/app.routes';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { LOCALE_ID } from '@angular/core';
+import { errorInterceptor } from './app/core/interceptor/error.interceptor';
+
 
 registerLocaleData(localePt);
 
@@ -15,7 +17,9 @@ bootstrapApplication(App, {
     provideHttpClient(), 
     provideHttpClient(withInterceptorsFromDi()),
     provideHttpClient(withInterceptors([AuthInterceptor])),
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    provideHttpClient(withInterceptors([errorInterceptor])
+    )
   ]
 });
 

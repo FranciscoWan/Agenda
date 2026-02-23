@@ -1,7 +1,8 @@
 <section class="relative min-h-screen" style="background-color: var(--color-black-background)">
 
     <!-- Background effects -->
-    <div class="bg-cyan-400 w-full sm:w-60 h-40 rounded-full absolute top-1 opacity-24 max-sm:right-0 sm:left-56 z-0"></div>
+    <div class="bg-cyan-400 w-full sm:w-60 h-40 rounded-full absolute top-1 opacity-24 max-sm:right-0 sm:left-56 z-0">
+    </div>
     <div class="bg-emerald-600 w-full sm:w-60 h-40 absolute top-0 left-0 opacity-24 z-1"></div>
     <div class="bg-purple-700 w-full sm:w-50 h-40 absolute top-40 left-0 opacity-24 z-0"></div>
 
@@ -25,20 +26,24 @@
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
 
                 <!-- ================= LEFT SIDE ================= -->
-                <div class="xl:col-span-5">
+                <div class="xl:col-span-5 border-custom box-border ">
 
-                    <h2 class="text-3xl leading-tight text-gray-100 mb-1.5 font-semibold">
+                    <h2 class="text-3xl leading-tight text-gray-100 mb-1.5 font-semibold pl-4 pt-2">
                         Próximos eventos
                     </h2>
 
-                    <p class="text-lg text-gray-200 mb-8">
-                        Não perca sua programação
-                    </p>
+                    <div class="pb-8 shadow-custom relative z-30">
+                        <p class="text-lg text-gray-200 pl-4 ">
+                            Não perca sua programação
+                        </p>
+                    </div>
 
-                    <div class="flex flex-col gap-5 border-custom">
+
+                    <div class="flex flex-col gap-5">
 
                         <!-- Card Evento -->
-                        <div class="flex flex-col gap-5 custom-scroll overflow-y-auto h-[68dvh]" (scroll)="onScroll($event)">
+                        <div class="flex flex-col gap-5 custom-scroll overflow-y-auto h-[70dvh] rounded-xl"
+                            (scroll)="onScroll($event)">
 
                             @for (event of this.eventService.upcomingEvents(); track event.id) {
                             <app-card-next-events [title]="event.title" [description]="event.description"
@@ -67,7 +72,8 @@
                             <div class="flex items-center">
                                 <fa-circle-plus-button (clicked)="openModal()"></fa-circle-plus-button>
 
-                                <div class="flex gap-1 p-1 shadow-sm border-custom" style="background-color: var(--color-black-background)">
+                                <div class="flex gap-1 p-1 shadow-sm border-custom"
+                                    style="background-color: var(--color-black-background)">
 
                                     <button (click)="setView('day')" [class.bg-blue-700]="viewMode() === 'day'"
                                         [class.text-white]="viewMode() === 'day'"
@@ -93,18 +99,19 @@
                         </div>
 
                         <!-- Conteúdo -->
-                        <div class=" rounded-xl shadow-md p-4 border-custom" style="background-color: var(--color-black-background)">
+                        <div class=" rounded-xl shadow-md p-4 border-custom"
+                            style="background-color: var(--color-black-background)">
 
                             @if (viewMode() === 'month') {
-                                <app-calendar-month></app-calendar-month>
+                            <app-calendar-month></app-calendar-month>
                             }
 
                             @if (viewMode() === 'week') {
-                                <app-calendar-week></app-calendar-week>
+                            <app-calendar-week></app-calendar-week>
                             }
 
                             @if (viewMode() === 'day') {
-                                <app-calendar-day></app-calendar-day>
+                            <app-calendar-day></app-calendar-day>
                             }
                         </div>
 
