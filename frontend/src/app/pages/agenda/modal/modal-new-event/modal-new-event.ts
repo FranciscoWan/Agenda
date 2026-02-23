@@ -1,17 +1,17 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DateTimePicker } from '../../../../shared/date-time-picker/date-time-picker';
 import { EventService } from '../../../../core/services/event.service'
-import { PopupModalComponent } from '../../../../shared/popup-modal/popup-modal';
+import { PopupService } from '../../../../shared/popup-modal/popup-modal.service';
+
 
 
 @Component({
   selector: 'app-new-event',
   standalone: true,
-  imports: [FormsModule, CommonModule, DateTimePicker, PopupModalComponent],
+  imports: [FormsModule, CommonModule, DateTimePicker],
   templateUrl: './modal-new-event.html',
   styleUrl: './modal-new-event.css',
 })
@@ -23,9 +23,7 @@ export class NewEvent {
   dataFim = '';
   cor = '#8FFA60';
 
-  showPopup = signal(false);
-  popupMessage = '';
-  popupType: 'success' | 'error' | 'warning' = 'success';
+  popup = inject(PopupService);
 
   cores = [
     { nome: 'Laranja', valor: '#FA7F60' },
@@ -47,11 +45,6 @@ export class NewEvent {
       return;
     }
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
     const payload = {
       titulo: this.titulo,
       descricao: this.descricao,
@@ -63,16 +56,13 @@ export class NewEvent {
     this.eventService.createEvent(payload)
       .subscribe({
         next: () => {
-        this.popupMessage = 'Evento salvo com sucesso';
-        this.popupType = 'success';
-        this.showPopup.set(true);
+          this.popup.showSuccess('Evento criado com sucesso');
           this.resetForm();
         },
         error: (error) => {
-        this.popupMessage = error?.error?.message;
-        this.popupType = 'error';
-        this.showPopup.set(true);
-        throw new Error(this.popupMessage);
+
+        this.popup.showError(error?.error?.message);
+        throw error;
         }
       });
       this.resetForm()

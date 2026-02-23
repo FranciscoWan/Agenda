@@ -9,16 +9,22 @@ export class PopupService {
   type = signal<PopupType>('success');
   visible = signal(false);
 
-  showError(message: string) {
+  show(message: string, type: PopupType = 'success') {
     this.message.set(message);
-    this.type.set('error');
+    this.type.set(type);
     this.visible.set(true);
   }
 
+  showError(message: string) {
+    this.show(message, 'error');
+  }
+
   showSuccess(message: string) {
-    this.message.set(message);
-    this.type.set('success');
-    this.visible.set(true);
+    this.show(message, 'success');
+  }
+
+  showWarning(message: string) {
+    this.show(message, 'warning');
   }
 
   close() {
