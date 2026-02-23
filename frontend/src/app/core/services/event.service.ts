@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
@@ -14,9 +14,12 @@ export interface CalendarEvent {
 @Injectable({
   providedIn: 'root'
 })
+
 export class EventService {
 
   private apiUrl = 'http://localhost:3000/events';
+
+  private visibleCount = signal(4);
 
   events = signal<CalendarEvent[]>([]);
 
@@ -26,6 +29,22 @@ export class EventService {
     return this.http.get<CalendarEvent[]>(this.apiUrl);
   }
 
+  upcomingEvents = computed(() => {
+    const now = new Date();
+
+    const sorted = this.events()
+      .filter(event => new Date(event.startDate) > now)
+      .sort((a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      );
+
+    return sorted.slice(0, this.visibleCount());
+  });
+
+  loadMore() {
+    this.visibleCount.update(count => count + 4);
+  }
+ 
   loadEventsByMonth(year: number, month: number) {
     this.http
       .get<any[]>(

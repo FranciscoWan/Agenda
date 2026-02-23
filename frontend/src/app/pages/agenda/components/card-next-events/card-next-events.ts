@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventService } from '../../../../core/services/event.service';
 
 @Component({
   selector: 'app-card-next-events',
@@ -7,6 +8,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './card-next-events.html',
 })
 export class CardNextEvents {
+
+  constructor(
+    private eventService: EventService
+  ){}
 
   title = input.required<string>();
   description = input.required<string>();

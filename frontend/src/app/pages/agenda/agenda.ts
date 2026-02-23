@@ -17,8 +17,6 @@ import { CardNextEvents } from './components/card-next-events/card-next-events';
 
 import { EventService } from '../../core/services/event.service';
 
-
-
 type ViewMode = 'day' | 'week' | 'month';
 
 @Component({
@@ -37,23 +35,15 @@ type ViewMode = 'day' | 'week' | 'month';
   templateUrl: './agenda.html',
   styleUrl: './agenda.css',
 })
+
 export class Agenda {
-  upcomingEvents = computed(() => {
-  const now = new Date();
-  return this.eventService.events()
-    .filter(event => new Date(event.startDate) > now)
-    .sort((a, b) =>
-      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-    )
-    .slice(0, 5);
-});
 
   faCirclePlus = faCirclePlus;
 
   isModalOpen = signal(false);
 
   constructor(
-    private eventService: EventService,
+    protected readonly eventService: EventService,
     private authService: AuthService,
     private router: Router,) {
     this.username$ = this.authService.username$;
@@ -84,4 +74,23 @@ export class Agenda {
     this.router.navigate(['/login']);
   }
 
+onScroll(event: Event) {
+  console.log('scrollando');
+
+  const element = event.target as HTMLElement;
+
+  const atBottom =
+    element.scrollHeight - element.scrollTop <= element.clientHeight + 5;
+
+  console.log({
+    scrollHeight: element.scrollHeight,
+    scrollTop: element.scrollTop,
+    clientHeight: element.clientHeight,
+    atBottom
+  });
+
+  if (atBottom) {
+    this.eventService.loadMore();
+  }
+}
 }

@@ -35,12 +35,12 @@
                         Não perca sua programação
                     </p>
 
-                    <div class="flex flex-col gap-5">
+                    <div class="flex flex-col gap-5 border-custom">
 
                         <!-- Card Evento -->
-                        <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-5 custom-scroll overflow-y-auto h-[68dvh]" (scroll)="onScroll($event)">
 
-                            @for (event of upcomingEvents(); track event.id) {
+                            @for (event of this.eventService.upcomingEvents(); track event.id) {
                             <app-card-next-events [title]="event.title" [description]="event.description"
                                 [startDate]="event.startDate" [endDate]="event.endDate" [color]="event.color">
                             </app-card-next-events>
@@ -56,7 +56,7 @@
                 <!-- ================= RIGHT SIDE ================= -->
                 <div class="xl:col-span-7">
 
-                    <div class="bg-neutral-800 p-6  p-6 h-full border-custom">
+                    <div class="bg-neutral-800 p-6 w-full border-custom flex flex-col">
 
                         <!-- Header -->
                         <div class="flex items-center justify-between mb-6">
@@ -71,19 +71,19 @@
 
                                     <button (click)="setView('day')" [class.bg-blue-700]="viewMode() === 'day'"
                                         [class.text-white]="viewMode() === 'day'"
-                                        class="px-4 py-2 rounded-md text-sm font-medium !text-white transition-all duration-200 hover:bg-blue-400 cursor-pointer">
+                                        class="px-4 py-2 rounded-2xl text-sm font-medium !text-white transition-all duration-200 hover:bg-blue-400 cursor-pointer">
                                         Dia
                                     </button>
 
                                     <button (click)="setView('week')" [class.bg-blue-700]="viewMode() === 'week'"
                                         [class.text-white]="viewMode() === 'week'"
-                                        class="px-4 py-2 rounded-md text-sm font-medium !text-white transition-all duration-200 hover:bg-blue-400 cursor-pointer">
+                                        class="px-4 py-2 rounded-2xl text-sm font-medium !text-white transition-all duration-200 hover:bg-blue-400 cursor-pointer">
                                         Semana
                                     </button>
 
                                     <button (click)="setView('month')" [class.bg-blue-700]="viewMode() === 'month'"
                                         [class.text-white]="viewMode() === 'month'"
-                                        class="px-4 py-2 rounded-md text-sm font-medium !text-white transition-all duration-200 hover:bg-blue-400 cursor-pointer">
+                                        class="px-4 py-2 rounded-2xl text-sm font-medium !text-white transition-all duration-200 hover:bg-blue-400 cursor-pointer">
                                         Mês
                                     </button>
 

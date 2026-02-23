@@ -72,3 +72,5 @@ src/styles.css
 Instalar jwt-decode
 npm install jwt-decode
 
+Instalar o tailwind-scrollbar
+npm install tailwind-scrollbar
