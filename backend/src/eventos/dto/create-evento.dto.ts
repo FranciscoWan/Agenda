@@ -2,32 +2,30 @@ import {
   IsString,
   IsNotEmpty,
   IsOptional,
-  IsDate,
-  Length,
   IsHexColor,
   Validate,
+  MinLength,
+  IsDateString,
 } from 'class-validator';
-import { Type } from 'class-transformer';
-import { IsBeforeConstraint } from '../validators/is-before.validator';
+import { IsAfterConstraint } from '../validators/is-after.validator';
 
 export class CreateEventDto {
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 150)
-  titulo: string;
 
+  
+  @IsString({ message: 'Título deve ser um texto' })
+  @MinLength(1, { message: 'Título não pode estar vazio' })
+  titulo: string;
+  
+  @IsDateString()
+  dataInicio: string;
+  
+  @IsDateString()
+  @Validate(IsAfterConstraint, ['dataInicio'])
+  dataFim: string;
+  
   @IsString()
   @IsOptional()
   descricao?: string;
-
-  @Type(() => Date)
-  @IsDate()
-  dataInicio: Date;
-
-  @Type(() => Date)
-  @IsDate()
-  @Validate(IsBeforeConstraint, ['dataInicio'])
-  dataFim: Date;
 
   @IsString()
   @IsNotEmpty()

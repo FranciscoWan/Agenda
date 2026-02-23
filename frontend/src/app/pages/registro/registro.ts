@@ -40,6 +40,7 @@ export class Registro {
 
     this.authService.register(data).subscribe({
       next: (response) => {
+        this.popupType = 'success'
         this.popupMessage = response?.response?.message || 'Usuário criado com sucesso!';
         this.showPopup.set(true);
         this.resetForm()

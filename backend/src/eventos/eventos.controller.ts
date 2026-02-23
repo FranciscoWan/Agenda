@@ -32,7 +32,7 @@ export class EventsController {
     @Query() query: any,
     @Request() req
   ) {
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     return this.eventsService.findByPeriod(userId, query);
   }

@@ -3,11 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from './entities/evento.entity';
 import { EventsService } from './eventos.service';
 import { EventsController } from './eventos.controller';
-import { IsBeforeConstraint } from './validators/is-before.validator';
+import { IsAfterConstraint } from './validators/is-after.validator';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Event])],
-  providers: [EventsService, IsBeforeConstraint],
+  providers: [EventsService, IsAfterConstraint],
   controllers: [EventsController],
 })
 export class EventsModule {}
