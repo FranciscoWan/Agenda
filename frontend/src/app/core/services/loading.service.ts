@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
 export class LoadingService {
 
   private _loading = signal(false);
-  loading = this._loading.asReadonly();
+  public readonly loading = this._loading.asReadonly();
 
   private activeRequests = 0;
 
@@ -17,7 +17,7 @@ export class LoadingService {
     // Só agenda o loader se for a primeira request
     if (this.activeRequests === 1) {
 
-      // Delay mínimo de 500ms antes de mostrar
+      // Delay mínimo de 400ms antes de mostrar
       this.showDelayTimer = setTimeout(() => {
         if (this.activeRequests > 0) {
           this._loading.set(true);

@@ -95,8 +95,8 @@ export class CalendarWeekComponent implements OnInit {
 
     // Distribui os eventos nos dias
     for (const e of events) {
-      const start = new Date(e.startDate);
-      const end = new Date(e.endDate);
+      const start = new Date(e.dataInicio);
+      const end = new Date(e.dataFim);
 
       let current = new Date(start);
 
@@ -114,12 +114,12 @@ export class CalendarWeekComponent implements OnInit {
     // Ordena os eventos de cada dia
     for (const key in mapped) {
       mapped[key].sort((a, b) => {
-        const startA = new Date(a.startDate).getTime();
-        const startB = new Date(b.startDate).getTime();
+        const startA = new Date(a.dataInicio).getTime();
+        const startB = new Date(b.dataInicio).getTime();
         if (startA !== startB) return startA - startB;
 
-        const endA = new Date(a.endDate).getTime();
-        const endB = new Date(b.endDate).getTime();
+        const endA = new Date(a.dataFim).getTime();
+        const endB = new Date(b.dataFim).getTime();
         return endA - endB;
       });
     }

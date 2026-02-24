@@ -46,8 +46,8 @@
                             (scroll)="onScroll($event)">
 
                             @for (event of this.eventService.upcomingEvents(); track event.id) {
-                            <app-card-next-events [title]="event.title" [description]="event.description"
-                                [startDate]="event.startDate" [endDate]="event.endDate" [color]="event.color">
+                            <app-card-next-events [titulo]="event.titulo" [descricao]="event.descricao"
+                                [dataInicio]="event.dataInicio" [dataFim]="event.dataFim" [cor]="event.cor">
                             </app-card-next-events>
                             }
 

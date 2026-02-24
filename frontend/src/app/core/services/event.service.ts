@@ -1,14 +1,23 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { catchError, filter, Observable, of, switchMap, tap } from 'rxjs';
 
 export interface CalendarEvent {
   id: string;
-  title: string;
-  description: string;
-  color: string;
-  startDate: string;
-  endDate: string;
+  usuario_id: string;
+  titulo: string;
+  descricao: string;
+  cor: string;
+  dataInicio: string;
+  dataFim: string;
+}
+
+export interface CreateEventPayload {
+  titulo: string;
+  descricao?: string;
+  dataInicio: string;
+  dataFim: string;
+  cor: string;
 }
 
 @Injectable({
@@ -19,9 +28,21 @@ export class EventService {
 
   private apiUrl = 'http://localhost:3000/events';
 
-  private visibleCount = signal(4);
+  readonly events = signal<CalendarEvent[]>([]);
 
-  events = signal<CalendarEvent[]>([]);
+  private visibleCount = signal(4);
+  public readonly upcomingEvents = computed(() => {
+    const count = this.visibleCount();
+    const now = new Date();
+
+    const sorted = this.events()
+      .filter(event => new Date(event.dataInicio) > now)
+      .sort((a, b) =>
+        new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime()
+      );
+
+    return sorted.slice(0, count);
+  });
 
   constructor(private http: HttpClient) { }
 
@@ -29,89 +50,64 @@ export class EventService {
     return this.http.get<CalendarEvent[]>(this.apiUrl);
   }
 
-  upcomingEvents = computed(() => {
-    const now = new Date();
-
-    const sorted = this.events()
-      .filter(event => new Date(event.startDate) > now)
-      .sort((a, b) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      );
-
-    return sorted.slice(0, this.visibleCount());
-  });
-
-  loadMore() {
-    this.visibleCount.update(count => count + 4);
-  }
- 
   loadEventsByMonth(year: number, month: number) {
-    this.http
-      .get<any[]>(
+    return this.http
+      .get<CalendarEvent[]>(
         `${this.apiUrl}?view=month&year=${year}&month=${month}`
+      ).pipe(
+        filter((eventos: CalendarEvent[]) => eventos.length > 0),
+        switchMap((eventos: CalendarEvent[]) => {
+          this.events.set(eventos);
+          return of(undefined);
+        }),
+        catchError((err) => {
+          throw err;
+        }),
       )
-      .subscribe(data => {
-        const mapped: CalendarEvent[] = data.map(e => ({
-          id: e.id,
-          title: e.titulo,
-          description: e.descricao,
-          color: e.cor,
-          startDate: e.dataInicio,
-          endDate: e.dataFim
-        }));
-
-        this.events.set(mapped);
-      });
   }
 
   loadEventsByWeek(year: number, week: number) {
     this.http
-      .get<any[]>(
+      .get<CalendarEvent[]>(
         `${this.apiUrl}?view=week&year=${year}&week=${week}`
+      ).pipe(
+        filter((eventos: CalendarEvent[]) => eventos.length > 0),
+        switchMap((eventos: CalendarEvent[]) => {
+          this.events.set(eventos);
+          return of(undefined);
+        }),
+        catchError((err) => {
+          throw err;
+        }),
       )
-      .subscribe(data => {
-        const mapped: CalendarEvent[] = data.map(e => ({
-          id: e.id,
-          title: e.titulo,
-          description: e.descricao,
-          color: e.cor,
-          startDate: e.dataInicio,
-          endDate: e.dataFim
-        }));
-
-        this.events.set(mapped);
-      });
   }
 
   loadEventsByDay(year: number, month: number, day: number) {
     const url = `${this.apiUrl}?view=day&year=${year}&month=${month}&day=${day}`;
-    this.http.get<any[]>(url)
-      .subscribe(data => {
-        const mapped: CalendarEvent[] = data.map(e => ({
-          id: e.id,
-          title: e.titulo,      
-          description: e.descricao, 
-          color: e.cor,          
-          startDate: e.dataInicio,
-          endDate: e.dataFim
-        }));
-        this.events.set(mapped);
-      });
+    this.http.get<CalendarEvent[]>(url)
+      .pipe(
+        filter((eventos: CalendarEvent[]) => eventos.length > 0),
+        switchMap((eventos: CalendarEvent[]) => {
+          this.events.set(eventos);
+          return of(undefined);
+        }),
+        catchError((err) => {
+          throw err;
+        }),
+      )
   }
 
+  loadMore() {
+    this.visibleCount.update(count => count + 4);
+  }
 
-  createEvent(payload: any) {
-    return this.http.post<CalendarEvent>(this.apiUrl, payload).pipe(tap((e) => {
-      const mapped: CalendarEvent = {
-        id: e.id,
-        title: (e as any).titulo,
-        description: (e as any).description,
-        color: (e as any).cor,
-        startDate: (e as any).dataInicio,
-        endDate: (e as any).dataFim
-      };
-      this.events.update(current => [...current, mapped]);
-    }));
-
+  createEvent(payload: CreateEventPayload) {
+    return this.http
+      .post<CalendarEvent>(this.apiUrl, payload)
+      .pipe(
+        tap((event: CalendarEvent) => {
+          this.events.update(current => [...current, event]);
+        })
+      );
   }
 }

@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DateTimePicker } from '../../../../shared/date-time-picker/date-time-picker';
-import { EventService } from '../../../../core/services/event.service'
+import { CreateEventPayload, EventService } from '../../../../core/services/event.service'
 import { PopupService } from '../../../../shared/popup-modal/popup-modal.service';
 
 
@@ -45,7 +45,7 @@ export class NewEvent {
       return;
     }
 
-    const payload = {
+    const payload: CreateEventPayload = {
       titulo: this.titulo,
       descricao: this.descricao,
       dataInicio: this.dataInicio,

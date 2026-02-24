@@ -38,7 +38,6 @@
 
         <div class="bg-[var(--color-black-background)]
             min-h-[48dvh]
-            p-2
             text-sm
             relative
             flex
@@ -54,13 +53,12 @@
             </span>
 
             <!-- Eventos -->
-            <div class="mt-6 flex flex-col space-y-1 custom-scroll min-h-0 flex-1 pr-1">
-
+            <div class="mt-6 flex flex-col space-y-1 custom-scroll min-h-0 flex-1 p-1">
                 @for (event of eventsByDay()[day.toDateString()]; track event.id) {
                 <div (click)="openEvent(event)"
-                    class="text-black text-xs font-bold h-6 px-2 py-1 flex items-center shrink-0 rounded-md truncate hover:scale-110 cursor-pointer "
-                    [style.background]="event.color">
-                    {{ event.title }}
+                    class="text-black text-xs font-bold h-6 px-2 py-1 flex items-center shrink-0 rounded-md truncate hover:scale-104 cursor-pointer"
+                    [style.background]="event.cor">
+                    {{ event.titulo }}
                 </div>
                 }
 
@@ -83,9 +81,12 @@
     <!-- Card central -->
     <div class="rounded-xl w-[600px] p-6 relative" (click)="$event.stopPropagation()">
 
-        <app-card-next-events [title]="selectedEvent()!.title" [description]="selectedEvent()!.description"
-            [startDate]="selectedEvent()!.startDate" [endDate]="selectedEvent()!.endDate"
-            [color]="selectedEvent()!.color">
+        <app-card-next-events 
+            [titulo]="selectedEvent()!.titulo" 
+            [descricao]="selectedEvent()!.descricao"
+            [dataInicio]="selectedEvent()!.dataInicio" 
+            [dataFim]="selectedEvent()!.dataFim"
+            [cor]="selectedEvent()!.cor">
         </app-card-next-events>
 
         <button (click)="closeModal()" class="absolute top-2 right-2 text-gray-200 hover:text-gray-500 cursor-pointer">

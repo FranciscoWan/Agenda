@@ -10,7 +10,7 @@ import { LoadingService } from '../../core/services/loading.service'
   template: `
     @if(loading.loading()) {
       <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-        <div class="bg-transparent p-6 rounded-xl shadow-lg flex flex-col items-center gap-3">
+        <div class="bg-transparent p-6 rounded-xl flex flex-col items-center gap-3">
           <div class="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
           <span class="text-lg text-gray-200">Carregando...</span>
         </div>

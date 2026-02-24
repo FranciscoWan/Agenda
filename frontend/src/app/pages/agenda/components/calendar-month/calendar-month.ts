@@ -28,6 +28,7 @@ export class CalendarMonthComponent implements OnInit {
   }
   
   ngOnInit() {
+
     this.initializeCalendar();
     this.loadCurrentMonthEvents();
   }
@@ -56,7 +57,11 @@ export class CalendarMonthComponent implements OnInit {
     this.eventService.loadEventsByMonth(
       this.currentYear(),
       this.currentMonth() + 1 // porque JS começa do 0
-    );
+    ).subscribe({
+      error: (err) => {
+        // ...
+      }
+    })
   }
 
   eventsByDay = computed(() => {
@@ -67,10 +72,10 @@ export class CalendarMonthComponent implements OnInit {
 
     for (const e of events) {
 
-      const start = new Date(e.startDate);
+      const start = new Date(e.dataInicio);
       start.setHours(0, 0, 0, 0);
 
-      const end = new Date(e.endDate);
+      const end = new Date(e.dataFim);
       end.setHours(0, 0, 0, 0);
 
       let current = new Date(start);
@@ -85,7 +90,6 @@ export class CalendarMonthComponent implements OnInit {
           if (!mapped[key]) {
             mapped[key] = [];
           }
-
           mapped[key].push(e);
         }
 
@@ -100,8 +104,6 @@ export class CalendarMonthComponent implements OnInit {
   );
 
 
-
-
   previousMonth() {
     if (this.currentMonth() === 0) {
       this.currentMonth.set(11);
@@ -109,7 +111,7 @@ export class CalendarMonthComponent implements OnInit {
     } else {
       this.currentMonth.set(this.currentMonth() - 1);
     }
-    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1);
+    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
   }
 
   nextMonth() {
@@ -119,7 +121,7 @@ export class CalendarMonthComponent implements OnInit {
     } else {
       this.currentMonth.set(this.currentMonth() + 1);
     }
-    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1);
+    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
   }
 
   formatDateKey(date: Date): string {

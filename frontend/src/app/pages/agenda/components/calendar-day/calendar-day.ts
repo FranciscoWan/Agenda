@@ -55,19 +55,19 @@ export class CalendarDayComponent implements OnInit {
     return events
       // Ordenação dos eventos por horário no calendário
       .filter(e => {
-        const start = new Date(e.startDate);
-        const end = new Date(e.endDate);
+        const start = new Date(e.dataInicio);
+        const end = new Date(e.dataFim);
         return start <= dayEnd && end >= dayStart;
       })
       .sort((a, b) => {
-        const startA = new Date(a.startDate).getTime();
-        const startB = new Date(b.startDate).getTime();
+        const startA = new Date(a.dataInicio).getTime();
+        const startB = new Date(b.dataInicio).getTime();
         if (startA !== startB) {
           return startA - startB; // primeiro pelo início
         }
 
-        const endA = new Date(a.endDate).getTime();
-        const endB = new Date(b.endDate).getTime();
+        const endA = new Date(a.dataFim).getTime();
+        const endB = new Date(b.dataFim).getTime();
         return endA - endB; // depois pelo fim
       });
   });

@@ -1,10 +1,5 @@
 <div class="min-h-dvh w-full flex flex-col bg-[var(--color-black-background)]">
   <global-loader></global-loader>
   <router-outlet></router-outlet>
-  <popup-modal
-  [message]="popup.message()"
-  [isVisible]="popup.visible()"
-  [type]="popup.type()"
-  (close)="popup.close()">
-</popup-modal>
+  <popup-modal></popup-modal>
 </div>

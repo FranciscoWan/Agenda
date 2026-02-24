@@ -13,22 +13,22 @@ export class CardNextEvents {
     private eventService: EventService
   ){}
 
-  title = input.required<string>();
-  description = input.required<string>();
-  startDate = input.required<string>();
-  endDate = input.required<string>();
-  color = input.required<string>();
+  titulo = input.required<string>();
+  descricao = input.required<string>();
+  dataInicio = input.required<string>();
+  dataFim = input.required<string>();
+  cor = input.required<string>();
 
   get formattedDate(): string {
-    const start = new Date(this.startDate());
-    const end = new Date(this.endDate());
+    const start = new Date(this.dataInicio());
+    const end = new Date(this.dataFim());
 
-    const date = start.toLocaleDateString('pt-BR', {
+    const data = start.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'short',
     });
 
-    const endDate = end.toLocaleDateString('pt-BR',{
+    const datFim = end.toLocaleDateString('pt-BR',{
       day: '2-digit',
       month: 'short',
     });
@@ -43,6 +43,6 @@ export class CardNextEvents {
       minute: '2-digit'
     });
 
-    return `${date} - ${startTime} / ${endDate} - ${endTime}`;
+    return `${data} - ${startTime} / ${datFim} - ${endTime}`;
   }
 }
