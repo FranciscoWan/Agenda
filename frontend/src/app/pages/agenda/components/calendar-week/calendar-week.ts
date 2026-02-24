@@ -154,4 +154,8 @@ export class CalendarWeekComponent implements OnInit {
     this.isModalOpen.set(false);
     this.selectedEvent.set(null);
   }
+
+  handleDeletedEvent() {
+    this.closeModal();
+  }
 }

@@ -1,10 +1,16 @@
 @if(popupService.topPopup){
-  <div 
-    class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
-    (click)="popupService.cancelAction()">
+
+  @if(popupService.popups().length >= 1){
+    <div 
+      class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+      (click)="popupService.cancelAction()">
+    </div>
+  }
+
+  <div class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
 
     <div 
-      class="bg-gray-900 text-white rounded-xl shadow-xl p-6 w-96 border animate-fade-in"
+      class="bg-gray-900 text-white rounded-xl shadow-xl p-6 w-96 border animate-fade-in pointer-events-auto"
       [ngClass]="borderClasses()"
       (click)="$event.stopPropagation()">
 

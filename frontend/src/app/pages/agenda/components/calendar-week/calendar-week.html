@@ -76,7 +76,7 @@
 @if (isModalOpen() && selectedEvent()) {
 
 <!-- Overlay -->
-<div class="fixed inset-0 top-0 bg-black/50 flex items-center justify-center z-50" (click)="closeModal()">
+<div class="fixed inset-0 top-0 bg-black/30 flex items-center justify-center z-50" (click)="closeModal()">
 
     <!-- Card central -->
     <div class="rounded-xl w-[600px] p-6 relative" (click)="$event.stopPropagation()">
@@ -87,7 +87,8 @@
             [descricao]="selectedEvent()!.descricao"
             [dataInicio]="selectedEvent()!.dataInicio" 
             [dataFim]="selectedEvent()!.dataFim"
-            [cor]="selectedEvent()!.cor">
+            [cor]="selectedEvent()!.cor"
+            (deleted)="handleDeletedEvent()">
         </app-card-next-events>
 
         <button (click)="closeModal()" class="absolute top-2 right-2 text-gray-200 hover:text-gray-500 cursor-pointer">

@@ -48,18 +48,20 @@ export class PopupService {
 
   // --- AÇÕES ---
   confirmAction() {
-    const top = this.bottomPopup;
-    if (top?.resolver) top.resolver(true);
+    const bottom = this.bottomPopup;
+    if (bottom?.resolver) bottom.resolver(true);
     this.closeBottom();
   }
 
   cancelAction() {
-    const top = this.bottomPopup;
-    if (top?.resolver) top.resolver(false);
+    console.log("trigou")
+    const bottom = this.bottomPopup;
+    if (bottom?.resolver) bottom.resolver(false);
     this.closeBottom();
   }
 
   closeBottom() {
+    // Corige o flik bug
     setTimeout(() => {
       this.popups.update(arr => arr.slice(1));
     }, 150);
