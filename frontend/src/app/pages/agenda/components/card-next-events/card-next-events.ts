@@ -1,17 +1,15 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EventService } from '../../../../core/services/event.service';
+import { FaIconButton } from '../../../../shared/buttons/fa-icon-button/fa-icon-button';
 
 @Component({
   selector: 'app-card-next-events',
-  imports: [CommonModule],
+  imports: [CommonModule, FaIconButton],
   templateUrl: './card-next-events.html',
 })
 export class CardNextEvents {
 
-  constructor(
-    private eventService: EventService
-  ){}
+  constructor(){}
 
   titulo = input.required<string>();
   descricao = input.required<string>();

@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { CalendarDayComponent } from './components/calendar-day/calendar-day';
 import { CalendarWeekComponent } from './components/calendar-week/calendar-week';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month';
 
-import { FaCirclePlusButton } from '../../shared/buttons/fa-circle-plus/fa-circle-plus';
+import { FaIconButton } from '../../shared/buttons/fa-icon-button/fa-icon-button';
 import { CardNextEvents } from './components/card-next-events/card-next-events';
 
 import { EventService } from '../../core/services/event.service';
@@ -28,7 +28,7 @@ type ViewMode = 'day' | 'week' | 'month';
     CalendarWeekComponent,
     CalendarDayComponent,
     FontAwesomeModule,
-    FaCirclePlusButton,
+    FaIconButton,
     NewEvent,
     CardNextEvents
   ],

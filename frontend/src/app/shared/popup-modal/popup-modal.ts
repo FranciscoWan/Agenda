@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { PopupService } from './popup-modal.service';
 
 export type PopupType = 'success' | 'error' | 'warning';

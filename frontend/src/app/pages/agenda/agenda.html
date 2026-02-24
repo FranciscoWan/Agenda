@@ -70,7 +70,9 @@
                                 Agenda
                             </h1>
                             <div class="flex items-center">
-                                <fa-circle-plus-button (clicked)="openModal()"></fa-circle-plus-button>
+                                <div class="pr-4">
+                                    <fa-icon-button [icon]="faCirclePlus" (clicked)="openModal()" variant="blue"></fa-icon-button>
+                                </div>
 
                                 <div class="flex gap-1 p-1 shadow-sm border-custom"
                                     style="background-color: var(--color-black-background)">

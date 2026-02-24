@@ -103,7 +103,6 @@ export class CalendarMonthComponent implements OnInit {
     new Date(this.currentYear(), this.currentMonth(), 1)
   );
 
-
   previousMonth() {
     if (this.currentMonth() === 0) {
       this.currentMonth.set(11);
