@@ -20,7 +20,11 @@ export class CalendarDayComponent implements OnInit {
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    );
+    ).subscribe({
+      error: (err) => {
+        throw err
+      }
+    });;
   }
 
   faAngleLeft = faAngleLeft;
@@ -92,7 +96,7 @@ export class CalendarDayComponent implements OnInit {
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    );
+    )
   }
 
   // Abrir modal
@@ -106,7 +110,7 @@ export class CalendarDayComponent implements OnInit {
     this.isModalOpen.set(false);
     this.selectedEvent.set(null);
   }
-  
+
   handleDeleted() {
     this.closeModal();
   }

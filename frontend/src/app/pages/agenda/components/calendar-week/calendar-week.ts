@@ -38,7 +38,11 @@ export class CalendarWeekComponent implements OnInit {
     this.eventService.loadEventsByWeek(
       start.getFullYear(),
       this.getWeekNumber(start)
-    );
+    ).subscribe({
+      error: (err) => {
+        throw err
+      }
+    });
   }
   // Calcula início (domingo) e fim (segunda)
   getWeekRange(date: Date) {

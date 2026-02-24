@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, filter, Observable, of, switchMap, tap } from 'rxjs';
+import { environment } from '../../../environment/environment';
 
 export interface CalendarEvent {
   id: string;
@@ -26,7 +27,7 @@ export interface CreateEventPayload {
 
 export class EventService {
 
-  private apiUrl = 'http://localhost:3000/events';
+  private apiUrl = `${environment.apiUrl}`;
 
   readonly events = signal<CalendarEvent[]>([]);
 
@@ -51,10 +52,9 @@ export class EventService {
   }
 
   loadEventsByMonth(year: number, month: number) {
-    return this.http
-      .get<CalendarEvent[]>(
-        `${this.apiUrl}?view=month&year=${year}&month=${month}`
-      ).pipe(
+    const url = `${this.apiUrl}?view=month&year=${year}&month=${month}`
+    return this.http.get<CalendarEvent[]>(url)
+      .pipe(
         filter((eventos: CalendarEvent[]) => eventos.length > 0),
         switchMap((eventos: CalendarEvent[]) => {
           this.events.set(eventos);
@@ -67,10 +67,9 @@ export class EventService {
   }
 
   loadEventsByWeek(year: number, week: number) {
-    this.http
-      .get<CalendarEvent[]>(
-        `${this.apiUrl}?view=week&year=${year}&week=${week}`
-      ).pipe(
+    const url = `${this.apiUrl}?view=week&year=${year}&week=${week}`
+    return this.http.get<CalendarEvent[]>(url)
+      .pipe(
         filter((eventos: CalendarEvent[]) => eventos.length > 0),
         switchMap((eventos: CalendarEvent[]) => {
           this.events.set(eventos);
@@ -84,7 +83,7 @@ export class EventService {
 
   loadEventsByDay(year: number, month: number, day: number) {
     const url = `${this.apiUrl}?view=day&year=${year}&month=${month}&day=${day}`;
-    this.http.get<CalendarEvent[]>(url)
+    return this.http.get<CalendarEvent[]>(url)
       .pipe(
         filter((eventos: CalendarEvent[]) => eventos.length > 0),
         switchMap((eventos: CalendarEvent[]) => {

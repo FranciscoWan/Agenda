@@ -28,7 +28,6 @@ export class CalendarMonthComponent implements OnInit {
   }
   
   ngOnInit() {
-
     this.initializeCalendar();
     this.loadCurrentMonthEvents();
   }
@@ -59,9 +58,9 @@ export class CalendarMonthComponent implements OnInit {
       this.currentMonth() + 1 // porque JS começa do 0
     ).subscribe({
       error: (err) => {
-        // ...
+        throw err
       }
-    })
+    });
   }
 
   eventsByDay = computed(() => {
