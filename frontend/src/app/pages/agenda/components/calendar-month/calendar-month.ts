@@ -136,4 +136,8 @@ export class CalendarMonthComponent implements OnInit {
     this.isModalOpen.set(false);
     this.selectedEvent.set(null);
   }
+
+  handleDeleted() {
+    this.closeModal();
+  }
 }

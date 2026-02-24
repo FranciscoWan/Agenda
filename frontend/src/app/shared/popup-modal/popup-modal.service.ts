@@ -1,4 +1,3 @@
-// popup.service.ts
 import { Injectable, signal } from '@angular/core';
 import { PopupType } from './popup-modal';
 
@@ -9,10 +8,26 @@ export class PopupService {
   type = signal<PopupType>('success');
   visible = signal(false);
 
+  confirmCallback = signal<(() => void) | null>(null);
+
   show(message: string, type: PopupType = 'success') {
     this.message.set(message);
     this.type.set(type);
+    this.confirmCallback.set(null);
     this.visible.set(true);
+  }
+
+  showConfirm(message: string, onConfirm: () => void) {
+    this.message.set(message);
+    this.type.set('warning');
+    this.confirmCallback.set(onConfirm);
+    this.visible.set(true);
+  }
+
+  confirm() {
+    const callback = this.confirmCallback();
+    if (callback) callback();
+    this.close();
   }
 
   showError(message: string) {
@@ -23,11 +38,8 @@ export class PopupService {
     this.show(message, 'success');
   }
 
-  showWarning(message: string) {
-    this.show(message, 'warning');
-  }
-
   close() {
     this.visible.set(false);
+    this.confirmCallback.set(null);
   }
 }

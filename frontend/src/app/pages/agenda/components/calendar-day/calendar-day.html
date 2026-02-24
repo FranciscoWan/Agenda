@@ -51,7 +51,8 @@
             [descricao]="selectedEvent()!.descricao"
             [dataInicio]="selectedEvent()!.dataInicio" 
             [dataFim]="selectedEvent()!.dataFim"
-            [cor]="selectedEvent()!.cor">
+            [cor]="selectedEvent()!.cor"
+            (deleted)="handleDeleted()">
         </app-card-next-events>
 
             <button (click)="closeModal()"
