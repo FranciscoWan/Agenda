@@ -85,7 +85,7 @@ export class CalendarDayComponent implements OnInit {
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    );
+    ).subscribe();
   }
 
   nextDay() {
@@ -96,7 +96,7 @@ export class CalendarDayComponent implements OnInit {
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    )
+    ).subscribe();
   }
 
   // Abrir modal

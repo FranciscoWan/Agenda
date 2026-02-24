@@ -31,7 +31,7 @@ export class EventService {
 
   readonly events = signal<CalendarEvent[]>([]);
 
-  private visibleCount = signal(4);
+  private visibleCount = signal(5);
   public readonly upcomingEvents = computed(() => {
     const count = this.visibleCount();
     const now = new Date();
@@ -57,6 +57,7 @@ export class EventService {
       .pipe(
         filter((eventos: CalendarEvent[]) => eventos.length > 0),
         switchMap((eventos: CalendarEvent[]) => {
+          this.visibleCount.set(5);
           this.events.set(eventos);
           return of(undefined);
         }),
@@ -72,6 +73,7 @@ export class EventService {
       .pipe(
         filter((eventos: CalendarEvent[]) => eventos.length > 0),
         switchMap((eventos: CalendarEvent[]) => {
+          this.visibleCount.set(5);
           this.events.set(eventos);
           return of(undefined);
         }),
@@ -87,6 +89,7 @@ export class EventService {
       .pipe(
         filter((eventos: CalendarEvent[]) => eventos.length > 0),
         switchMap((eventos: CalendarEvent[]) => {
+          this.visibleCount.set(5);
           this.events.set(eventos);
           return of(undefined);
         }),

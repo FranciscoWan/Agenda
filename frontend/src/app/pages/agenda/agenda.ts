@@ -77,7 +77,7 @@ export class Agenda {
     const element = event.target as HTMLElement;
 
     const atBottom =
-      element.scrollHeight - element.scrollTop <= element.clientHeight + 5;
+      element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
 
     if (atBottom) {
       this.eventService.loadMore();

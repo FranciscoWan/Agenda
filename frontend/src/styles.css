@@ -94,3 +94,173 @@ html, body {
 .inner-shadow-custom{
   box-shadow: inset 0px -15px 15px -8px rgba(50, 50, 93, 0.65);
 }
+
+/* ===== FLATPICKR DARK THEME ===== */
+
+.flatpickr-calendar {
+  background: #363636;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-family: inherit;
+}
+
+/* Seta do topo */
+.flatpickr-calendar.arrowTop::before,
+.flatpickr-calendar.arrowTop::after {
+  border-bottom-color: #363636;
+}
+
+/* Header: mês e ano */
+.flatpickr-months {
+  background: #2d2d2d;
+  border-radius: 16px 16px 0 0;
+  padding: 4px 0;
+}
+
+.flatpickr-month {
+  color: #fff;
+  fill: #fff;
+}
+
+.flatpickr-current-month {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+}
+
+.flatpickr-current-month input.cur-year {
+  color: #fff;
+}
+
+/* Setas de navegação */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+.flatpickr-prev-month:hover svg,
+.flatpickr-next-month:hover svg {
+  fill: #3b82f6 !important;
+}
+
+/* Dias da semana */
+.flatpickr-weekdays {
+  background: #2d2d2d;
+}
+
+span.flatpickr-weekday {
+  background: #2d2d2d;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* Grid de dias */
+.flatpickr-days {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dayContainer {
+  border: none;
+}
+
+.flatpickr-day {
+  color: #e2e8f0;
+  border-radius: 8px;
+  border: none;
+}
+
+.flatpickr-day:hover {
+  background: #475569;
+  color: #fff;
+  border: none;
+}
+
+/* Dia selecionado */
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+  border-radius: 8px;
+}
+
+/* Hoje */
+.flatpickr-day.today {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.flatpickr-day.today:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
+/* Dias de outros meses */
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  color: #64748b;
+}
+
+/* Dias desabilitados */
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+  color: #475569;
+  cursor: not-allowed;
+}
+
+/* ===== TIME PICKER ===== */
+.flatpickr-time {
+  background: #2d2d2d;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0 0 16px 16px;
+}
+
+.flatpickr-time input {
+  background: transparent;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.flatpickr-time input:hover,
+.flatpickr-time input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.flatpickr-time .flatpickr-time-separator {
+  color: #94a3b8;
+}
+
+.flatpickr-time .arrowUp,
+.flatpickr-time .arrowDown {
+  border-color: transparent;
+}
+
+.flatpickr-time .arrowUp::after {
+  border-bottom-color: #94a3b8;
+}
+
+.flatpickr-time .arrowDown::after {
+  border-top-color: #94a3b8;
+}
+
+.flatpickr-time .arrowUp:hover::after {
+  border-bottom-color: #3b82f6;
+}
+
+.flatpickr-time .arrowDown:hover::after {
+  border-top-color: #3b82f6;
+}

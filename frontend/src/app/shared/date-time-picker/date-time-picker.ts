@@ -16,7 +16,6 @@ import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './date-time-picker.html',
-  styleUrl: './date-time-picker.css'
 })
 export class DateTimePicker implements AfterViewInit {
 

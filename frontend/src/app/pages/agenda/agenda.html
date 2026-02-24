@@ -42,7 +42,7 @@
                     <div class="flex flex-col gap-5">
 
                         <!-- Card Evento -->
-                        <div class="flex flex-col gap-5 custom-scroll overflow-y-auto h-[68dvh] rounded-b-xl pl-2 pr-2"
+                        <div class="flex flex-col gap-5 custom-scroll overflow-y-scroll h-[66dvh] rounded-b-xl pl-2 pr-2"
                             (scroll)="onScroll($event)">
 
                             @for (event of this.eventService.upcomingEvents(); track event.id) {
@@ -57,9 +57,6 @@
                             }
 
                         </div>
-
-                        <!-- Repita seus outros cards aqui normalmente -->
-
                     </div>
                 </div>
 
