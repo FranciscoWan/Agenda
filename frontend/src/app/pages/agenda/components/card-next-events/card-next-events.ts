@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FaIconButton } from '../../../../shared/buttons/fa-icon-button/fa-icon-button';
+import { EventService } from '../../../../core/services/event.service';
 
 @Component({
   selector: 'app-card-next-events',
@@ -9,8 +10,9 @@ import { FaIconButton } from '../../../../shared/buttons/fa-icon-button/fa-icon-
 })
 export class CardNextEvents {
 
-  constructor(){}
+  private eventService = inject(EventService)
 
+  id = input.required<string>();
   titulo = input.required<string>();
   descricao = input.required<string>();
   dataInicio = input.required<string>();
@@ -43,4 +45,11 @@ export class CardNextEvents {
 
     return `${data} - ${startTime} / ${datFim} - ${endTime}`;
   }
+  
+  onDelete() {
+  this.eventService.deleteEvent(this.id())
+    .subscribe({
+      error: (err) => console.error('Erro ao excluir evento', err)
+    });
+}
 }

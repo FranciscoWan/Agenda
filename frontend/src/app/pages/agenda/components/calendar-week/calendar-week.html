@@ -82,6 +82,7 @@
     <div class="rounded-xl w-[600px] p-6 relative" (click)="$event.stopPropagation()">
 
         <app-card-next-events 
+            [id]="selectedEvent()!.id"
             [titulo]="selectedEvent()!.titulo" 
             [descricao]="selectedEvent()!.descricao"
             [dataInicio]="selectedEvent()!.dataInicio" 

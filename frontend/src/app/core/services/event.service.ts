@@ -110,4 +110,16 @@ export class EventService {
         })
       );
   }
+
+  deleteEvent(id: string) {
+    return this.http
+      .delete<void>(`${this.apiUrl}/${id}`)
+      .pipe(
+        tap(() => {
+          this.events.update(events =>
+            events.filter(event => event.id !== id)
+          );
+        })
+      );
+  }
 }

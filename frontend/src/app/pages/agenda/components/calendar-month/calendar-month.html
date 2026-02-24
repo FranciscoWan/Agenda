@@ -78,6 +78,7 @@
       (click)="$event.stopPropagation()">
 
         <app-card-next-events 
+            [id]="selectedEvent()!.id"
             [titulo]="selectedEvent()!.titulo" 
             [descricao]="selectedEvent()!.descricao"
             [dataInicio]="selectedEvent()!.dataInicio" 

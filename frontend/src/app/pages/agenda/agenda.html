@@ -47,7 +47,7 @@
 
                             @for (event of this.eventService.upcomingEvents(); track event.id) {
                             <app-card-next-events [titulo]="event.titulo" [descricao]="event.descricao"
-                                [dataInicio]="event.dataInicio" [dataFim]="event.dataFim" [cor]="event.cor">
+                                [dataInicio]="event.dataInicio" [dataFim]="event.dataFim" [cor]="event.cor" [id]="event.id">
                             </app-card-next-events>
                             }
 
