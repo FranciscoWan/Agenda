@@ -1,7 +1,7 @@
-@if(popupService.visible()){
+@if(popupService.topPopup){
   <div 
     class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
-    (click)="onClose()">
+    (click)="popupService.cancelAction()">
 
     <div 
       class="bg-gray-900 text-white rounded-xl shadow-xl p-6 w-96 border animate-fade-in"
@@ -13,20 +13,20 @@
       </h3>
 
       <p class="mt-3 text-gray-300">
-        {{ popupService.message() }}
+        {{ popupService.topPopup.message }}
       </p>
 
-      @if(popupService.confirmCallback()){
+      @if(popupService.topPopup.isConfirm){
         <!-- Modo confirmação -->
         <div class="flex gap-3 mt-5">
           <button 
-            (click)="popupService.close()"
+            (click)="popupService.cancelAction()"
             class="w-full bg-gray-700 hover:bg-gray-600 transition rounded-md py-2 font-semibold cursor-pointer">
             Cancelar
           </button>
 
           <button 
-            (click)="popupService.confirm()"
+            (click)="popupService.confirmAction()"
             class="w-full bg-red-600 hover:bg-red-500 transition rounded-md py-2 font-semibold cursor-pointer">
             Confirmar
           </button>
@@ -35,7 +35,7 @@
       @else {
         <!-- Modo informativo -->
         <button 
-          (click)="onClose()"
+          (click)="popupService.closeBottom()"
           class="mt-5 w-full transition duration-300 rounded-md py-2 font-semibold cursor-pointer"
           [ngClass]="buttonClasses()">
           OK

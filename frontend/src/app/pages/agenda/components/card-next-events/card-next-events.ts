@@ -52,21 +52,29 @@ export class CardNextEvents {
     return `${data} - ${startTime} / ${datFim} - ${endTime}`;
   }
 
-  onDelete() {
-    this.popupService.showConfirm(
-      'Tem certeza que deseja excluir este evento?',
-      () => {
-        this.eventService.deleteEvent(this.id())
-          .subscribe({
-            next: () => {
-              this.deleted.emit();
-              this.popupService.showSuccess('Evento excluído com sucesso!');
-            },
-            error: (err) => {
-              this.popupService.showError('Erro ao excluir evento.' + err);
-            }
-          });
+async onDelete() {
+  try {
+    // Abre o popup de confirmação e espera a resposta do usuário
+    const confirmed = await this.popupService.confirm(
+      'Tem certeza que deseja excluir este evento?'
+    );
+
+    if (!confirmed) return; // Usuário cancelou
+
+    // Se confirmado, deleta o evento
+    this.eventService.deleteEvent(this.id()).subscribe({
+      next: () => {
+        this.deleted.emit();
+        
+        // Mostra popup de sucesso (irá empilhar corretamente)
+        this.popupService.show('Evento excluído com sucesso!', 'success');
+      },
+      error: (err) => {
+        this.popupService.show('Erro ao excluir evento: ' + err, 'error');
       }
-    )
+    });
+  } catch (err) {
+    console.error('Erro no onDelete:', err);
   }
+}
 }

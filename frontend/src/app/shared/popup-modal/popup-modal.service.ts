@@ -1,45 +1,67 @@
 import { Injectable, signal } from '@angular/core';
-import { PopupType } from './popup-modal';
+
+export type PopupType = 'success' | 'error' | 'warning';
+
+export interface PopupState {
+  message: string;
+  type: PopupType;
+  isConfirm: boolean;
+  resolver?: (value: boolean) => void;
+}
 
 @Injectable({ providedIn: 'root' })
 export class PopupService {
 
-  message = signal('');
-  type = signal<PopupType>('success');
-  visible = signal(false);
+  // fila de popups
+  popups = signal<PopupState[]>([]);
 
-  confirmCallback = signal<(() => void) | null>(null);
+  // Retorna o topo da pilha
+  get topPopup(): PopupState | undefined {
+    const all = this.popups();
+    return all[all.length - 1];
+  }
 
+  // Retorna o popup do fundo (bottomPopup)
+  get bottomPopup(): PopupState | undefined {
+    const all = this.popups();
+    return all[0];
+  }
+
+  // --- FUNÇÕES ANTIGAS MANTIDAS ---
   show(message: string, type: PopupType = 'success') {
-    this.message.set(message);
-    this.type.set(type);
-    this.confirmCallback.set(null);
-    this.visible.set(true);
-  }
-
-  showConfirm(message: string, onConfirm: () => void) {
-    this.message.set(message);
-    this.type.set('warning');
-    this.confirmCallback.set(onConfirm);
-    this.visible.set(true);
-  }
-
-  confirm() {
-    const callback = this.confirmCallback();
-    if (callback) callback();
-    this.close();
-  }
-
-  showError(message: string) {
-    this.show(message, 'error');
+    this.popups.update(arr => [...arr, { message, type, isConfirm: false }]);
   }
 
   showSuccess(message: string) {
     this.show(message, 'success');
   }
 
-  close() {
-    this.visible.set(false);
-    this.confirmCallback.set(null);
+  showError(message: string) {
+    this.show(message, 'error');
+  }
+
+  confirm(message: string): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.popups.update(arr => [...arr, { message, type: 'warning', isConfirm: true, resolver: resolve }]);
+    });
+  }
+
+  // --- AÇÕES ---
+  confirmAction() {
+    const top = this.bottomPopup;
+    if (top?.resolver) top.resolver(true);
+    this.closeBottom();
+  }
+
+  cancelAction() {
+    const top = this.bottomPopup;
+    if (top?.resolver) top.resolver(false);
+    this.closeBottom();
+  }
+
+  closeBottom() {
+    setTimeout(() => {
+      this.popups.update(arr => arr.slice(1));
+    }, 150);
   }
 }

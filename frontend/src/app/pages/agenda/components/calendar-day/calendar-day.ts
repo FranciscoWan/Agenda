@@ -111,7 +111,4 @@ export class CalendarDayComponent implements OnInit {
     this.selectedEvent.set(null);
   }
 
-  handleDeleted() {
-    this.closeModal();
-  }
 }
