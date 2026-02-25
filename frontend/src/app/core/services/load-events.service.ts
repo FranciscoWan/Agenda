@@ -8,7 +8,7 @@ import { CalendarEvent, EventStateService } from './event-state.service';
   providedIn: 'root'
 })
 export class LoadEventsService {
-  private apiUrl = `${environment.apiUrl}`;
+  private apiUrl = `${environment.apiUrl}/events`;
 
   constructor(
     private http: HttpClient,

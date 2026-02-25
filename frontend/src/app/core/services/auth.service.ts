@@ -22,7 +22,7 @@ interface JwtPayload {
 })
 export class AuthService {
 
-  private apiUrl = `${environment.apiUrl}`;
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   private usernameSubject = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSubject.asObservable();

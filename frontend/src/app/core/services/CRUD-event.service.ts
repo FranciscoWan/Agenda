@@ -18,8 +18,8 @@ export interface CreateEventPayload {
 export class CRUDEventService {
   private http = inject(HttpClient);
   private stateService = inject(EventStateService);
-  
-  private apiUrl = `${environment.apiUrl}`;
+
+  private apiUrl = `${environment.apiUrl}/events`;
 
   // Expõe o computed do state service
   public readonly upcomingEvents = this.stateService.upcomingEvents;
