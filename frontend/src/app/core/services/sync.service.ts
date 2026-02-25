@@ -18,11 +18,18 @@ export class EventSyncService implements OnDestroy {
 
   public notifications$ = this.notificationSubject.asObservable();
 
-  constructor() {}
+  constructor() { }
 
   /* ===================== CONNECT ===================== */
 
   connectToSSE() {
+
+    // Evita duplicação
+    if (this.sseConnection) {
+      console.log('⚠️ SSE já está conectado');
+      return;
+    }
+
     try {
       this.sseConnection = new EventSource(
         `${environment.apiUrl}/events/stream`,
@@ -48,8 +55,11 @@ export class EventSyncService implements OnDestroy {
 
         this.disconnect();
 
+        // Reconecta apenas se não houver conexão ativa
         setTimeout(() => {
-          this.connectToSSE();
+          if (!this.sseConnection) {
+            this.connectToSSE();
+          }
         }, 5000);
       };
 

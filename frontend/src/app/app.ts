@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { PopupService } from './shared/popup-modal/popup-modal.service';
 import { PopupModalComponent } from './shared/popup-modal/popup-modal';
-import { GlobalLoaderComponent } from './shared/loader/global-loader.component'
-import { EventSyncService } from './core/services/sync.service';
+import { GlobalLoaderComponent } from './shared/loader/global-loader.component';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +11,6 @@ import { EventSyncService } from './core/services/sync.service';
   standalone: true,
 })
 export class App {
-  
-  private syncService = inject(EventSyncService);
 
-  constructor(public popup: PopupService) {
-    this.syncService.connectToSSE();
-  }
+  constructor(public popup: PopupService) {}
 }

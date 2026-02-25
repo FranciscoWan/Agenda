@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environment/environment';
+import { EventSyncService } from './sync.service'
 
 interface RegisterDto {
   username: string;
@@ -14,6 +15,8 @@ interface RegisterDto {
   providedIn: 'root'
 })
 export class AuthService {
+
+  private syncService = inject(EventSyncService)
 
   private apiUrl = `${environment.apiUrl}/auth`;
 
@@ -37,6 +40,7 @@ export class AuthService {
       { withCredentials: true }
     ).pipe(
       tap(() => {
+        this.syncService.connectToSSE();
         // Após login bem-sucedido, buscar usuário autenticado
         this.fetchCurrentUser().subscribe();
       })
@@ -66,6 +70,7 @@ export class AuthService {
     ).pipe(
       map((user) => {
         this.usernameSubject.next(user.username); // atualiza username$
+        this.syncService.connectToSSE();
         return true; // retorna boolean pro guard
       }),
       catchError(() => {
