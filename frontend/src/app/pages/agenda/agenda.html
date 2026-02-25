@@ -45,7 +45,7 @@
                         <div class="flex flex-col gap-5 custom-scroll overflow-y-scroll h-[66dvh] rounded-b-xl pl-2 pr-2"
                             (scroll)="onScroll($event)">
 
-                            @for (event of this.eventService.upcomingEvents(); track event.id) {
+                            @for (event of this.eventStateService.upcomingEvents(); track event.id) {
                             <app-card-next-events 
                                 [titulo]="event.titulo" 
                                 [descricao]="event.descricao"

@@ -1,8 +1,10 @@
-import { Component, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { EventService, CalendarEvent } from '../../../../core/services/event.service';
+import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
+import { EventStateService, CalendarEvent } from '../../../../core/services/event-state.service';
+import { LoadEventsService } from '../../../../core/services/load-events.service';
 import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
@@ -23,8 +25,9 @@ export class CalendarWeekComponent implements OnInit {
 
   weekDays = signal<Date[]>([]);
 
-  constructor(private eventService: EventService) {
-  }
+  protected readonly crudEventService = inject(CRUDEventService)
+  protected readonly eventStateService = inject(EventStateService)
+  protected readonly loadEventService = inject(LoadEventsService)
 
   ngOnInit() {
     this.loadWeek(this.currentDate());
@@ -35,7 +38,7 @@ export class CalendarWeekComponent implements OnInit {
 
     this.generateWeekDays(start);
 
-    this.eventService.loadEventsByWeek(
+    this.loadEventService.loadEventsByWeek(
       start.getFullYear(),
       this.getWeekNumber(start)
     ).subscribe({
@@ -86,7 +89,7 @@ export class CalendarWeekComponent implements OnInit {
 
   // Organiza eventos por dia da semana, ordenando pelo horário
   eventsByDay = computed(() => {
-    const events = this.eventService.events();
+    const events = this.eventStateService.events();
     const days = this.weekDays();
 
     const mapped: { [key: string]: CalendarEvent[] } = {};

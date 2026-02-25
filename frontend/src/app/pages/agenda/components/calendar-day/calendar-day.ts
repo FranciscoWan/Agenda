@@ -1,8 +1,10 @@
-import { Component, signal, computed, OnInit } from '@angular/core';
+import { Component, signal, computed, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { EventService, CalendarEvent } from '../../../../core/services/event.service';
+import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
+import { EventStateService, CalendarEvent } from '../../../../core/services/event-state.service';
+import { LoadEventsService } from '../../../../core/services/load-events.service';
 import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
@@ -13,10 +15,29 @@ import { CardNextEvents } from '../card-next-events/card-next-events';
 })
 export class CalendarDayComponent implements OnInit {
 
+  protected readonly crudEventService = inject(CRUDEventService)
+  protected readonly eventStateService = inject(EventStateService)
+  protected readonly loadEventService = inject(LoadEventsService)
+
+  faAngleLeft = faAngleLeft;
+  faAngleRight = faAngleRight;
+  
+  // Data atual
+  currentDate = signal(new Date());
+  
+  // Derivados para facilitar
+  currentYear = computed(() => this.currentDate().getFullYear());
+  currentMonth = computed(() => this.currentDate().getMonth());
+  currentDay = computed(() => this.currentDate().getDate());
+  
+  // Modal
+  selectedEvent = signal<CalendarEvent | null>(null);
+  isModalOpen = signal(false);
+
   ngOnInit() {
     const date = this.currentDate();
 
-    this.eventService.loadEventsByDay(
+    this.loadEventService.loadEventsByDay(
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
@@ -27,28 +48,10 @@ export class CalendarDayComponent implements OnInit {
     });;
   }
 
-  faAngleLeft = faAngleLeft;
-  faAngleRight = faAngleRight;
-
-  // Data atual
-  currentDate = signal(new Date());
-
-  // Derivados para facilitar
-  currentYear = computed(() => this.currentDate().getFullYear());
-  currentMonth = computed(() => this.currentDate().getMonth());
-  currentDay = computed(() => this.currentDate().getDate());
-
-  // Modal
-  selectedEvent = signal<CalendarEvent | null>(null);
-  isModalOpen = signal(false);
-
-  constructor(private eventService: EventService) {
-  }
-
   // Eventos do dia, ordenados por hora
   eventsOfDay = computed(() => {
     const date = this.currentDate();
-    const events = this.eventService.events();
+    const events = this.eventStateService.events();
 
     const dayStart = new Date(date);
     dayStart.setHours(0, 0, 0, 0);
@@ -81,7 +84,7 @@ export class CalendarDayComponent implements OnInit {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() - 1);
     this.currentDate.set(date);
-    this.eventService.loadEventsByDay(
+    this.loadEventService.loadEventsByDay(
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
@@ -92,7 +95,7 @@ export class CalendarDayComponent implements OnInit {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() + 1);
     this.currentDate.set(date);
-    this.eventService.loadEventsByDay(
+    this.loadEventService.loadEventsByDay(
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()

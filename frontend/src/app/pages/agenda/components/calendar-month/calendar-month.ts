@@ -1,8 +1,10 @@
-import { Component, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { EventService, CalendarEvent } from '../../../../core/services/event.service';
+import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
+import { EventStateService, CalendarEvent } from '../../../../core/services/event-state.service';
+import { LoadEventsService } from '../../../../core/services/load-events.service';
 import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
@@ -24,8 +26,10 @@ export class CalendarMonthComponent implements OnInit {
 
   selectedEvent = signal<CalendarEvent | null>(null);
   isModalOpen = signal(false);
-  constructor(private eventService: EventService) {
-  }
+  
+  protected readonly crudEventService = inject(CRUDEventService)
+  protected readonly eventStateService = inject(EventStateService)
+  protected readonly loadEventService = inject(LoadEventsService)
   
   ngOnInit() {
     this.initializeCalendar();
@@ -53,7 +57,7 @@ export class CalendarMonthComponent implements OnInit {
   }
 
   loadCurrentMonthEvents() {
-    this.eventService.loadEventsByMonth(
+    this.loadEventService.loadEventsByMonth(
       this.currentYear(),
       this.currentMonth() + 1 // porque JS começa do 0
     ).subscribe({
@@ -66,7 +70,7 @@ export class CalendarMonthComponent implements OnInit {
   eventsByDay = computed(() => {
     const currentYear = this.currentYear()
     const currentMonth = this.currentMonth()
-    const events = this.eventService.events()
+    const events = this.eventStateService.events()
     const mapped: { [key: string]: CalendarEvent[] } = {};
 
     for (const e of events) {
@@ -109,7 +113,7 @@ export class CalendarMonthComponent implements OnInit {
     } else {
       this.currentMonth.set(this.currentMonth() - 1);
     }
-    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
+    this.loadEventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
   }
 
   nextMonth() {
@@ -119,7 +123,7 @@ export class CalendarMonthComponent implements OnInit {
     } else {
       this.currentMonth.set(this.currentMonth() + 1);
     }
-    this.eventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
+    this.loadEventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
   }
 
   formatDateKey(date: Date): string {

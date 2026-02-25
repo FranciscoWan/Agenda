@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { Observable } from 'rxjs';
@@ -15,7 +15,8 @@ import { CalendarMonthComponent } from './components/calendar-month/calendar-mon
 import { FaIconButton } from '../../shared/buttons/fa-icon-button/fa-icon-button';
 import { CardNextEvents } from './components/card-next-events/card-next-events';
 
-import { EventService } from '../../core/services/event.service';
+import { CRUDEventService } from '../../core/services/CRUD-event.service';
+import { EventStateService } from '../../core/services/event-state.service';
 
 type ViewMode = 'day' | 'week' | 'month';
 
@@ -41,9 +42,11 @@ export class Agenda {
 
   isModalOpen = signal(false);
 
+  protected readonly crudEventService = inject(CRUDEventService)
+  protected readonly eventStateService = inject(EventStateService)
+  private authService = inject(AuthService)
+
   constructor(
-    protected readonly eventService: EventService,
-    private authService: AuthService,
     private router: Router,) {
     this.username$ = this.authService.username$;
   }
@@ -80,7 +83,7 @@ export class Agenda {
       element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
 
     if (atBottom) {
-      this.eventService.loadMore();
+      this.eventStateService.loadMore();
     }
   }
 }

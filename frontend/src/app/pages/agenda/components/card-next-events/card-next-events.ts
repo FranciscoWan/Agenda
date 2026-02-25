@@ -1,7 +1,7 @@
 import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FaIconButton } from '../../../../shared/buttons/fa-icon-button/fa-icon-button';
-import { EventService } from '../../../../core/services/event.service';
+import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
 import { PopupService } from '../../../../shared/popup-modal/popup-modal.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { PopupService } from '../../../../shared/popup-modal/popup-modal.service
 })
 export class CardNextEvents {
 
-  private eventService = inject(EventService)
+  private eventService = inject(CRUDEventService)
   private popupService = inject(PopupService)
 
   deleted = output<void>();
