@@ -1,7 +1,7 @@
 // global-loader.component.ts
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoadingService } from '../../core/services/loading.service'
+import { GlobalLoaderService } from './loading.service'
 
 @Component({
   selector: 'global-loader',
@@ -19,5 +19,5 @@ import { LoadingService } from '../../core/services/loading.service'
   `
 })
 export class GlobalLoaderComponent {
-  loading = inject(LoadingService);
+  loading = inject(GlobalLoaderService);
 }

@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
-export class LoadingService {
+export class GlobalLoaderService {
 
   private _loading = signal(false);
   public readonly loading = this._loading.asReadonly();

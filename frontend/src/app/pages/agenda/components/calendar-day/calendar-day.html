@@ -24,7 +24,7 @@
             flex flex-col items-center gap-2">
             @for (event of eventsOfDay(); track event.id) {
             <div (click)="openEvent(event)"
-                class="text-black text-xs font-bold px-4 py-1 rounded-md truncate hover:scale-102 cursor-pointer w-full max-w-xl shrink-0"
+                class="text-black text-xs font-bold px-4 py-1 rounded-md truncate hover:scale-102 cursor-pointer w-full max-w-xl shrink-0 coiny-regular"
                 [style.background]="event.cor">
                 {{ event.dataInicio | date:'HH:mm' }} - {{ event.dataFim | date:'HH:mm' }}: {{ event.titulo }}
             </div>

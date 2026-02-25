@@ -3,12 +3,12 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, finalize, throwError } from 'rxjs';
 import { PopupService } from '../../shared/popup-modal/popup-modal.service';
-import { LoadingService } from '../services/loading.service';
+import { GlobalLoaderService } from '../../shared/loader/loading.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   const popup = inject(PopupService);
-  const loading = inject(LoadingService);
+  const loading = inject(GlobalLoaderService);
 
   loading.start();
 
