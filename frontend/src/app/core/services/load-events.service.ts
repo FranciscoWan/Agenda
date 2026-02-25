@@ -48,7 +48,7 @@ export class LoadEventsService implements OnDestroy {
       this.apiUrl,
       {
         params,
-        withCredentials: true // 👈 ESSENCIAL
+        withCredentials: true
       }
     ).pipe(
       filter((eventos: CalendarEvent[]) => eventos.length >= 0),

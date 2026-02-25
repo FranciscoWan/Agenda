@@ -32,7 +32,7 @@ export class NewEvent {
   ];
 
   constructor(
-    private eventService: CRUDEventService
+    private crudEventService: CRUDEventService
   ) { }
 
   onSubmit() {
@@ -45,7 +45,7 @@ export class NewEvent {
       cor: this.cor
     };
 
-    this.eventService.createEvent(payload)
+    this.crudEventService.createEvent(payload)
       .subscribe({
         next: () => {
           this.popup.showSuccess('Evento criado com sucesso');
