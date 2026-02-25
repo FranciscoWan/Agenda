@@ -1,20 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
-import { jwtDecode } from 'jwt-decode';
+import { Observable, BehaviorSubject, tap, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environment/environment';
 
 interface RegisterDto {
   username: string;
   password: string;
   telefone: string;
-}
-
-interface JwtPayload {
-  username: string;
-  sub: string;
-  iat: number;
-  exp: number;
 }
 
 @Injectable({
@@ -27,9 +20,7 @@ export class AuthService {
   private usernameSubject = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSubject.asObservable();
 
-  constructor(private http: HttpClient) {
-    this.restoreSession();
-  }
+  constructor(private http: HttpClient) { }
 
   /* ===================== REGISTER ===================== */
 
@@ -40,79 +31,64 @@ export class AuthService {
   /* ===================== LOGIN ===================== */
 
   login(data: { username: string; password: string }) {
-    return this.http.post<{ access_token: string }>(
+    return this.http.post(
       `${this.apiUrl}/login`,
-      data
+      data,
+      { withCredentials: true }
     ).pipe(
-      tap(response => {
-        this.saveToken(response.access_token);
+      tap(() => {
+        // Após login bem-sucedido, buscar usuário autenticado
+        this.fetchCurrentUser().subscribe();
       })
     );
   }
 
-  /* ===================== TOKEN ===================== */
-
-  private saveToken(token: string) {
-    localStorage.setItem('token', token);
-    this.decodeAndSetUser(token);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
   /* ===================== LOGOUT ===================== */
 
-  logout() {
-    localStorage.removeItem('token');
-    this.usernameSubject.next(null);
+  logout(): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/logout`,
+      {},
+      { withCredentials: true }
+    ).pipe(
+      tap(() => {
+        this.usernameSubject.next(null);
+      })
+    );
   }
 
-  /* ===================== SESSION ===================== */
+  /* ===================== AUTH STATUS ===================== */
 
-  private restoreSession() {
-    const token = this.getToken();
-
-    if (!token) return;
-
-    if (this.isTokenExpired(token)) {
-      this.logout();
-      return;
-    }
-
-    this.decodeAndSetUser(token);
+  isAuthenticated(): Observable<boolean> {
+    return this.http.get<any>(
+      `${this.apiUrl}/me`,
+      { withCredentials: true }
+    ).pipe(
+      map((user) => {
+        this.usernameSubject.next(user.username); // atualiza username$
+        return true; // retorna boolean pro guard
+      }),
+      catchError(() => {
+        this.usernameSubject.next(null); // limpa username$
+        return of(false);
+      })
+    );
   }
 
-  isAuthenticated(): boolean {
-    const token = this.getToken();
-    
-    if (!token) return false;
+  /* ===================== GET CURRENT USER ===================== */
 
-    if (this.isTokenExpired(token)) {
-      this.logout();
-      return false;
-    }
-    return true;
-}
-
-  /* ===================== JWT ===================== */
-
-  private decodeAndSetUser(token: string) {
-    try {
-      const decoded = jwtDecode<JwtPayload>(token);
-      this.usernameSubject.next(decoded.username);
-    } catch {
-      this.usernameSubject.next(null);
-    }
-  }
-
-  private isTokenExpired(token: string): boolean {
-    try {
-      const decoded = jwtDecode<JwtPayload>(token);
-      const currentTime = Date.now() / 1000;
-      return decoded.exp < currentTime;
-    } catch {
-      return true;
-    }
+  fetchCurrentUser() {
+    return this.http.get(
+      `${this.apiUrl}/me`,
+      { withCredentials: true }
+    ).pipe(
+      tap((user: any) => {
+        this.usernameSubject.next(user.username);
+      }),
+      catchError(() => {
+        this.usernameSubject.next(null);
+        return of(null);
+      })
+    );
   }
 }

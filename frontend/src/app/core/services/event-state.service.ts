@@ -1,4 +1,6 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal, inject } from '@angular/core';
+import { Subject } from 'rxjs';
+import { EventSyncService } from './sync.service';
 
 export interface CalendarEvent {
   id: string;
@@ -13,13 +15,12 @@ export interface CalendarEvent {
 @Injectable({
   providedIn: 'root'
 })
-
 export class EventStateService {
-  // Estado centralizado
+  private eventSyncService = inject(EventSyncService);
+  
   readonly events = signal<CalendarEvent[]>([]);
   private visibleCount = signal(5);
 
-  // Computed
   public readonly upcomingEvents = computed(() => {
     const count = this.visibleCount();
     const now = new Date();
@@ -33,7 +34,28 @@ export class EventStateService {
     return sorted.slice(0, count);
   });
 
-  // Métodos públicos para manipular estado
+  // Subject para emitir necessidade de reload
+  private reloadNeededSubject = new Subject<void>();
+  public readonly reloadNeeded$ = this.reloadNeededSubject.asObservable();
+
+  constructor() {
+    this.setupSyncListener();
+  }
+
+  private setupSyncListener() {
+    this.eventSyncService.notifications$.subscribe({
+      next: (notification) => {
+        console.log('📨 Notificação SSE recebida:', notification.type);
+        
+        // Emitir que reload é necessário
+        this.reloadNeededSubject.next();
+      },
+      error: (error) => {
+        console.error('❌ Erro no SSE:', error);
+      }
+    });
+  }
+
   setEvents(events: CalendarEvent[]) {
     this.events.set(events);
   }

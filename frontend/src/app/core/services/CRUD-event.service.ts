@@ -24,10 +24,9 @@ export class CRUDEventService {
   // Expõe o computed do state service
   public readonly upcomingEvents = this.stateService.upcomingEvents;
   
-  
   createEvent(payload: CreateEventPayload): Observable<any> {
     return this.http
-      .post<any>(this.apiUrl, payload)
+      .post<any>(this.apiUrl, payload, { withCredentials: true })
       .pipe(
         tap((event: any) => {
           this.stateService.addEvent(event);
@@ -37,7 +36,7 @@ export class CRUDEventService {
 
   deleteEvent(id: string): Observable<void> {
     return this.http
-      .delete<void>(`${this.apiUrl}/${id}`)
+      .delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true })
       .pipe(
         tap(() => {
           this.stateService.removeEvent(id);

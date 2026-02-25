@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../core/services/auth.service';
 import { DateTimePicker } from '../../../../shared/date-time-picker/date-time-picker';
 import { CreateEventPayload, CRUDEventService } from '../../../../core/services/CRUD-event.service'
 import { PopupService } from '../../../../shared/popup-modal/popup-modal.service';
@@ -33,17 +32,10 @@ export class NewEvent {
   ];
 
   constructor(
-    private authService: AuthService,
     private eventService: CRUDEventService
   ) { }
 
   onSubmit() {
-    const token = this.authService.getToken();
-
-    if (!token) {
-      alert('Usuário não autenticado');
-      return;
-    }
 
     const payload: CreateEventPayload = {
       titulo: this.titulo,

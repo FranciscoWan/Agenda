@@ -1,16 +1,18 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { map } from 'rxjs';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  if (authService.isAuthenticated()) {
-    return true;
-  }
-
-  // Se não tiver token, redireciona para a home
-  router.navigate(['/']);
-  return false;
+  return authService.isAuthenticated().pipe(
+    map((isAuth) => {
+      if (!isAuth) {
+        return router.createUrlTree(['/login']);
+      }
+      return true;
+    })
+  );
 };
