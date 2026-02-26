@@ -15,7 +15,7 @@ bootstrapApplication(App, {
     provideRouter(routes),
 
     provideHttpClient(
-      withInterceptors([errorInterceptor]) // 👈 mantém só o interceptor de erro
+      withInterceptors([errorInterceptor])
     ),
 
     { provide: LOCALE_ID, useValue: 'pt-BR' }

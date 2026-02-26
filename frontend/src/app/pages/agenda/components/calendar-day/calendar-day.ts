@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
-import { EventStateService, CalendarEvent } from '../../../../core/services/event-state.service';
-import { LoadEventsService } from '../../../../core/services/load-events.service';
+import { StateEventService, CalendarEvent } from '../../../../core/services/state-event.service';
 import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
@@ -16,8 +15,7 @@ import { CardNextEvents } from '../card-next-events/card-next-events';
 export class CalendarDayComponent implements OnInit {
 
   protected readonly crudEventService = inject(CRUDEventService)
-  protected readonly eventStateService = inject(EventStateService)
-  protected readonly loadEventService = inject(LoadEventsService)
+  protected readonly eventStateService = inject(StateEventService)
 
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
@@ -37,19 +35,15 @@ export class CalendarDayComponent implements OnInit {
   ngOnInit() {
     const date = this.currentDate();
 
-    this.loadEventService.loadEventsByDay(
+    this.eventStateService.loadEventsByDay(
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    ).subscribe({
-      error: (err) => {
-        throw err
-      }
-    });;
-  }
+    );
+  };
 
   // Eventos do dia, ordenados por hora
-  eventsOfDay = computed(() => {
+  public eventsOfDay = computed(() => {
     const date = this.currentDate();
     const events = this.eventStateService.events();
 
@@ -80,41 +74,41 @@ export class CalendarDayComponent implements OnInit {
   });
 
   // Navegação entre dias
-  previousDay() {
+  public previousDay() {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() - 1);
     this.currentDate.set(date);
-    this.loadEventService.loadEventsByDay(
+    this.eventStateService.loadEventsByDay(
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    ).subscribe();
-  }
+    );
+  };
 
-  nextDay() {
+  public nextDay() {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() + 1);
     this.currentDate.set(date);
-    this.loadEventService.loadEventsByDay(
+    this.eventStateService.loadEventsByDay(
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate()
-    ).subscribe();
-  }
+    );
+  };
 
   // Abrir modal
-  openEvent(event: CalendarEvent) {
+  public openEvent(event: CalendarEvent) {
     this.selectedEvent.set(event);
     this.isModalOpen.set(true);
   }
 
   // Fechar modal
-  closeModal() {
+  public closeModal() {
     this.isModalOpen.set(false);
     this.selectedEvent.set(null);
   }
   
-  handleDeletedEvent() {
+  public handleDeletedEvent() {
     this.closeModal();
   }
 }

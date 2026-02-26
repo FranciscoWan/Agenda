@@ -11,12 +11,13 @@ export interface EventNotification {
 @Injectable({
   providedIn: 'root'
 })
-export class EventSyncService implements OnDestroy {
+export class SyncEventService implements OnDestroy {
 
   private sseConnection?: EventSource;
+
   private notificationSubject = new Subject<EventNotification>();
 
-  public notifications$ = this.notificationSubject.asObservable();
+  public readonly notifications$ = this.notificationSubject.asObservable();
 
   constructor() { }
 
@@ -70,7 +71,7 @@ export class EventSyncService implements OnDestroy {
 
   /* ===================== DISCONNECT ===================== */
 
-  disconnect() {
+  private disconnect() {
     if (this.sseConnection) {
       this.sseConnection.close();
       this.sseConnection = undefined;
@@ -80,12 +81,13 @@ export class EventSyncService implements OnDestroy {
 
   /* ===================== RECONNECT ===================== */
 
-  reconnect() {
+  private reconnect() {
     this.disconnect();
     this.connectToSSE();
   }
 
   ngOnDestroy() {
     this.disconnect();
+    this.notificationSubject.complete();
   }
 }

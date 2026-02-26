@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environment/environment';
-import { EventSyncService } from './sync.service'
+import { SyncEventService } from './sync-event.service'
 
 interface RegisterDto {
   username: string;
@@ -16,14 +16,13 @@ interface RegisterDto {
 })
 export class AuthService {
 
-  private syncService = inject(EventSyncService)
+  private syncService = inject(SyncEventService);
+  private http = inject(HttpClient);
 
   private apiUrl = `${environment.apiUrl}/auth`;
 
   private usernameSubject = new BehaviorSubject<string | null>(null);
-  username$ = this.usernameSubject.asObservable();
-
-  constructor(private http: HttpClient) { }
+  public readonly username$ = this.usernameSubject.asObservable();
 
   /* ===================== REGISTER ===================== */
 

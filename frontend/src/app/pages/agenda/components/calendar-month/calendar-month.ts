@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
-import { EventStateService, CalendarEvent } from '../../../../core/services/event-state.service';
-import { LoadEventsService } from '../../../../core/services/load-events.service';
+import { StateEventService, CalendarEvent } from '../../../../core/services/state-event.service';
 import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
@@ -28,15 +27,15 @@ export class CalendarMonthComponent implements OnInit {
   isModalOpen = signal(false);
   
   protected readonly crudEventService = inject(CRUDEventService)
-  protected readonly eventStateService = inject(EventStateService)
-  protected readonly loadEventService = inject(LoadEventsService)
+  protected readonly eventStateService = inject(StateEventService)
+
   
   ngOnInit() {
     this.initializeCalendar();
     this.loadCurrentMonthEvents();
   }
 
-  initializeCalendar() {
+  private initializeCalendar() {
     const totalDays = new Date(
       this.currentYear(),
       this.currentMonth() + 1,
@@ -56,18 +55,14 @@ export class CalendarMonthComponent implements OnInit {
     ).getDay();
   }
 
-  loadCurrentMonthEvents() {
-    this.loadEventService.loadEventsByMonth(
+  private loadCurrentMonthEvents() {
+    this.eventStateService.loadEventsByMonth(
       this.currentYear(),
       this.currentMonth() + 1 // porque JS começa do 0
-    ).subscribe({
-      error: (err) => {
-        throw err
-      }
-    });
+    )
   }
 
-  eventsByDay = computed(() => {
+  public eventsByDay = computed(() => {
     const currentYear = this.currentYear()
     const currentMonth = this.currentMonth()
     const events = this.eventStateService.events()
@@ -102,45 +97,45 @@ export class CalendarMonthComponent implements OnInit {
     return mapped;
   })
 
-  monthDate = computed(() =>
+  public monthDate = computed(() =>
     new Date(this.currentYear(), this.currentMonth(), 1)
   );
 
-  previousMonth() {
+  public previousMonth() {
     if (this.currentMonth() === 0) {
       this.currentMonth.set(11);
       this.currentYear.set(this.currentYear() - 1);
     } else {
       this.currentMonth.set(this.currentMonth() - 1);
     }
-    this.loadEventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
+    this.eventStateService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1);
   }
 
-  nextMonth() {
+  public nextMonth() {
     if (this.currentMonth() === 11) {
       this.currentMonth.set(0);
       this.currentYear.set(this.currentYear() + 1);
     } else {
       this.currentMonth.set(this.currentMonth() + 1);
     }
-    this.loadEventService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1).subscribe();
+    this.eventStateService.loadEventsByMonth(this.currentYear(), this.currentMonth() + 1);
   }
 
-  formatDateKey(date: Date): string {
+  public formatDateKey(date: Date): string {
     return `${date.getFullYear()}-${date.getMonth()}`;
   }
 
-  openEvent(event: CalendarEvent) {
+  public openEvent(event: CalendarEvent) {
     this.selectedEvent.set(event);
     this.isModalOpen.set(true);
   }
 
-  closeModal() {
+  public closeModal() {
     this.isModalOpen.set(false);
     this.selectedEvent.set(null);
   }
 
-  handleDeletedEvent() {
+  public handleDeletedEvent() {
     this.closeModal();
   }
 }

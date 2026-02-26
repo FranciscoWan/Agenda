@@ -1,10 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
-import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { NewEvent } from './modal/modal-new-event/modal-new-event';
 
@@ -16,7 +15,7 @@ import { FaIconButton } from '../../shared/buttons/fa-icon-button/fa-icon-button
 import { CardNextEvents } from './components/card-next-events/card-next-events';
 
 import { CRUDEventService } from '../../core/services/CRUD-event.service';
-import { EventStateService } from '../../core/services/event-state.service';
+import { StateEventService } from '../../core/services/state-event.service';
 
 type ViewMode = 'day' | 'week' | 'month';
 
@@ -37,41 +36,31 @@ type ViewMode = 'day' | 'week' | 'month';
 })
 
 export class Agenda {
+  protected readonly eventStateService = inject(StateEventService);
+  protected readonly authService = inject(AuthService);
+  protected readonly router = inject(Router);
 
-  faCirclePlus = faCirclePlus;
+  protected faCirclePlusIcon: IconDefinition = faCirclePlus;
 
-  isModalOpen = signal(false);
+  protected isNewEventModalOpen = signal(false);
 
-  protected readonly crudEventService = inject(CRUDEventService)
-  protected readonly eventStateService = inject(EventStateService)
-  private authService = inject(AuthService)
+  protected viewMode = signal<ViewMode>('month');
 
-  constructor(
-    private router: Router,) {
-    this.username$ = this.authService.username$;
-  }
+  protected showNewEventModal = signal(false);
 
-  username$: Observable<string | null>;
-
-  viewMode = signal<ViewMode>('month');
-
-  showNewEventModal = signal(false);
-
-  dataChild: number = 0;
-
-  setView(mode: ViewMode) {
+  public setView(mode: ViewMode) {
     this.viewMode.set(mode);
   }
 
-  openModal() {
-    this.isModalOpen.set(true);
+  public openModal() {
+    this.isNewEventModalOpen.set(true);
   }
 
-  closeModal() {
-    this.isModalOpen.set(false);
+  public closeModal() {
+    this.isNewEventModalOpen.set(false);
   }
 
-  logout(): void {
+  public logout(): void {
     this.authService.logout().subscribe({
       next: () => {
         this.router.navigate(['/login']);
@@ -82,7 +71,7 @@ export class Agenda {
     });
   }
 
-  onScroll(event: Event) {
+  public onScroll(event: Event) {
     const element = event.target as HTMLElement;
 
     const atBottom =

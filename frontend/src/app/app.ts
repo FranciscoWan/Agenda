@@ -12,5 +12,8 @@ import { GlobalLoaderComponent } from './shared/loader/global-loader.component';
 })
 export class App {
 
-  constructor(public popup: PopupService) {}
+  constructor(public popup: PopupService) {
+    
+  }
+  
 }

@@ -1,10 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
-import { EventStateService } from './event-state.service';
 
-export interface CreateEventPayload {
+export interface CRUDCreateEventPayload {
   titulo: string;
   descricao?: string;
   dataInicio: string;
@@ -17,30 +16,20 @@ export interface CreateEventPayload {
 })
 export class CRUDEventService {
   private http = inject(HttpClient);
-  private stateService = inject(EventStateService);
-
   private apiUrl = `${environment.apiUrl}/events`;
 
-  // Expõe o computed do state service
-  public readonly upcomingEvents = this.stateService.upcomingEvents;
-  
-  createEvent(payload: CreateEventPayload): Observable<any> {
-    return this.http
-      .post<any>(this.apiUrl, payload, { withCredentials: true })
-      .pipe(
-        tap((event: any) => {
-          this.stateService.addEvent(event);
-        })
-      );
+  public createEvent(payload: CRUDCreateEventPayload): Observable<any> {
+    return this.http.post<any>(
+      this.apiUrl,
+      payload,
+      { withCredentials: true }
+    );
   }
 
-  deleteEvent(id: string): Observable<void> {
-    return this.http
-      .delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true })
-      .pipe(
-        tap(() => {
-          this.stateService.removeEvent(id);
-        })
-      );
+  public deleteEvent(id: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/${id}`,
+      { withCredentials: true }
+    );
   }
 }

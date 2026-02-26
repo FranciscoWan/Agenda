@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DateTimePicker } from '../../../../shared/date-time-picker/date-time-picker';
-import { CreateEventPayload, CRUDEventService } from '../../../../core/services/CRUD-event.service'
+import { CRUDCreateEventPayload, CRUDEventService } from '../../../../core/services/CRUD-event.service'
 import { PopupService } from '../../../../shared/popup-modal/popup-modal.service';
 
 
@@ -37,7 +37,7 @@ export class NewEvent {
 
   onSubmit() {
 
-    const payload: CreateEventPayload = {
+    const payload: CRUDCreateEventPayload = {
       titulo: this.titulo,
       descricao: this.descricao,
       dataInicio: this.dataInicio,

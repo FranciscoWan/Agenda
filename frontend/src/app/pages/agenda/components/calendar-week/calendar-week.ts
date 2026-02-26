@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { CRUDEventService } from '../../../../core/services/CRUD-event.service';
-import { EventStateService, CalendarEvent } from '../../../../core/services/event-state.service';
-import { LoadEventsService } from '../../../../core/services/load-events.service';
+import { StateEventService, CalendarEvent } from '../../../../core/services/state-event.service';
 import { CardNextEvents } from '../card-next-events/card-next-events';
 
 @Component({
@@ -26,8 +25,7 @@ export class CalendarWeekComponent implements OnInit {
   weekDays = signal<Date[]>([]);
 
   protected readonly crudEventService = inject(CRUDEventService)
-  protected readonly eventStateService = inject(EventStateService)
-  protected readonly loadEventService = inject(LoadEventsService)
+  protected readonly eventStateService = inject(StateEventService)
 
   ngOnInit() {
     this.loadWeek(this.currentDate());
@@ -38,17 +36,14 @@ export class CalendarWeekComponent implements OnInit {
 
     this.generateWeekDays(start);
 
-    this.loadEventService.loadEventsByWeek(
+    this.eventStateService.loadEventsByWeek(
       start.getFullYear(),
       this.getWeekNumber(start)
-    ).subscribe({
-      error: (err) => {
-        throw err
-      }
-    });
-  }
+    );
+  };
+
   // Calcula início (domingo) e fim (segunda)
-  getWeekRange(date: Date) {
+  private getWeekRange(date: Date) {
     const current = new Date(date);
 
     const dayOfWeek = current.getDay(); // 0 (Dom) → 6 (Sáb)
@@ -65,7 +60,7 @@ export class CalendarWeekComponent implements OnInit {
   }
 
   // Gera array com os 7 dias da semana
-  generateWeekDays(start: Date) {
+  private generateWeekDays(start: Date) {
     const days: Date[] = [];
 
     for (let i = 0; i < 7; i++) {
@@ -78,7 +73,7 @@ export class CalendarWeekComponent implements OnInit {
   }
 
   // Calcula número da semana
-  getWeekNumber(date: Date): number {
+  private getWeekNumber(date: Date): number {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
     const pastDays = Math.floor(
       (date.getTime() - firstDayOfYear.getTime()) / 86400000
@@ -88,7 +83,7 @@ export class CalendarWeekComponent implements OnInit {
   }
 
   // Organiza eventos por dia da semana, ordenando pelo horário
-  eventsByDay = computed(() => {
+  public eventsByDay = computed(() => {
     const events = this.eventStateService.events();
     const days = this.weekDays();
 
@@ -134,31 +129,31 @@ export class CalendarWeekComponent implements OnInit {
     return mapped;
   });
 
-  previousWeek() {
+  public previousWeek() {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() - 7);
     this.currentDate.set(date);
     this.loadWeek(date);
   }
 
-  nextWeek() {
+  public nextWeek() {
     const date = new Date(this.currentDate());
     date.setDate(date.getDate() + 7);
     this.currentDate.set(date);
     this.loadWeek(date);
   }
 
-  openEvent(event: CalendarEvent) {
+  public openEvent(event: CalendarEvent) {
     this.selectedEvent.set(event);
     this.isModalOpen.set(true);
   }
 
-  closeModal() {
+  public closeModal() {
     this.isModalOpen.set(false);
     this.selectedEvent.set(null);
   }
 
-  handleDeletedEvent() {
+  public handleDeletedEvent() {
     this.closeModal();
   }
 }
